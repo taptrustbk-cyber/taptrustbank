@@ -2,153 +2,84 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Dashboard | TapTrust Bank</title>
+    <title>TapTrust – Dashboard</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <style>
         body {
             margin: 0;
-            font-family: Arial, Helvetica, sans-serif;
-            background: #0a2540;
-            color: #ffffff;
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0a2d4d, #041c32);
+            color: white;
         }
 
         header {
-            padding: 20px;
-            background: #081e33;
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            padding: 20px;
+            background: rgba(0,0,0,0.3);
         }
 
         header img {
-            height: 40px;
+            width: 40px;
+            margin-right: 10px;
         }
 
-        .logout {
-            color: #f6c453;
-            text-decoration: none;
-            font-weight: bold;
+        header h1 {
+            color: #f9c74f;
+            font-size: 20px;
         }
 
         .container {
-            padding: 20px;
+            padding: 30px;
         }
 
         .card {
-            background: linear-gradient(135deg, #f6c453, #ffd77a);
-            color: #0a2540;
-            padding: 25px;
-            border-radius: 16px;
-            margin-bottom: 25px;
-        }
-
-        .card h3 {
-            margin: 0;
-        }
-
-        .balance {
-            font-size: 32px;
-            font-weight: bold;
-            margin-top: 10px;
-        }
-
-        .actions {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 25px;
-        }
-
-        .action-btn {
-            flex: 1;
-            padding: 15px;
-            background: #0f3a63;
-            border-radius: 14px;
-            text-align: center;
-            cursor: pointer;
-        }
-
-        .action-btn:hover {
-            background: #144a7c;
-        }
-
-        h4 {
-            margin-bottom: 10px;
-            color: #f6c453;
-        }
-
-        .list {
-            background: rgba(255,255,255,0.06);
-            border-radius: 14px;
-            padding: 15px;
+            background: rgba(255,255,255,0.08);
+            padding: 20px;
+            border-radius: 15px;
             margin-bottom: 20px;
         }
 
-        .item {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+        .card h2 {
+            color: #f9c74f;
         }
 
-        .item:last-child {
-            border-bottom: none;
+        .logout {
+            margin-top: 30px;
+            text-align: center;
         }
 
-        .buy-btn {
-            background: #f6c453;
-            color: #0a2540;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 20px;
-            cursor: pointer;
+        .logout a {
+            color: #f9c74f;
+            text-decoration: none;
             font-weight: bold;
         }
     </style>
 </head>
+
 <body>
 
 <header>
-    <img src="logo.png" alt="TapTrust Logo">
-    <a href="index.html" class="logout">Logout</a>
+    <img src="assets/logo.png" alt="Logo">
+    <h1>TapTrust Dashboard</h1>
 </header>
 
 <div class="container">
 
-    <!-- BALANCE -->
     <div class="card">
-        <h3>Total Balance</h3>
-        <div class="balance">$1,250.00</div>
+        <h2>Account Balance</h2>
+        <p>$12,450.00</p>
     </div>
 
-    <!-- ACTIONS -->
-    <div class="actions">
-        <div class="action-btn">➕ Add Money</div>
-        <div class="action-btn">📤 Send Money</div>
-        <div class="action-btn">📄 Transactions</div>
+    <div class="card">
+        <h2>Recent Activity</h2>
+        <p>No transactions yet</p>
     </div>
 
-    <!-- TRANSACTIONS -->
-    <h4>Recent Transactions</h4>
-    <div class="list">
-        <div class="item"><span>Admin Add</span><span>+ $500</span></div>
-        <div class="item"><span>Send to User</span><span>- $120</span></div>
-        <div class="item"><span>Market Purchase</span><span>- $80</span></div>
-    </div>
-
-    <!-- MARKET -->
-    <h4>Market</h4>
-    <div class="list">
-        <div class="item"><span>Item 1</span><button class="buy-btn">$10</button></div>
-        <div class="item"><span>Item 2</span><button class="buy-btn">$20</button></div>
-        <div class="item"><span>Item 3</span><button class="buy-btn">$30</button></div>
-        <div class="item"><span>Item 4</span><button class="buy-btn">$40</button></div>
-        <div class="item"><span>Item 5</span><button class="buy-btn">$50</button></div>
-        <div class="item"><span>Item 6</span><button class="buy-btn">$60</button></div>
-        <div class="item"><span>Item 7</span><button class="buy-btn">$70</button></div>
-        <div class="item"><span>Item 8</span><button class="buy-btn">$80</button></div>
-        <div class="item"><span>Item 9</span><button class="buy-btn">$90</button></div>
-        <div class="item"><span>Item 10</span><button class="buy-btn">$100</button></div>
+    <div class="logout">
+        <a href="index.html">← Logout</a>
     </div>
 
 </div>
