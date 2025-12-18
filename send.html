@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>TapTrust | Send Money</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f1f5f9;
+}
+
+.sidebar {
+  width: 230px;
+  height: 100vh;
+  background: #0f172a;
+  color: white;
+  position: fixed;
+}
+
+.sidebar h2 {
+  text-align: center;
+  padding: 20px;
+  border-bottom: 1px solid #1e293b;
+}
+
+.sidebar a {
+  display: block;
+  padding: 15px 20px;
+  color: #cbd5f5;
+  text-decoration: none;
+}
+
+.sidebar a:hover {
+  background: #1e293b;
+  color: white;
+}
+
+.main {
+  margin-left: 230px;
+  padding: 30px;
+}
+
+.card {
+  background: white;
+  max-width: 500px;
+  padding: 25px;
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.08);
+}
+
+.card h2 {
+  margin-top: 0;
+}
+
+input, textarea {
+  width: 100%;
+  padding: 12px;
+  margin-top: 12px;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  font-size: 15px;
+}
+
+textarea {
+  resize: none;
+}
+
+button {
+  width: 100%;
+  margin-top: 20px;
+  padding: 14px;
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+button:disabled {
+  background: #94a3b8;
+}
+
+.msg {
+  margin-top: 15px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.error { color: red; }
+.success { color: green; }
+</style>
+</head>
+
+<body>
+
+<div class="sidebar">
+  <h2>🏦 TapTrust</h2>
+  <a href="dashboard.html">Wallet</a>
+  <a href="market.html">Market</a>
+  <a href="send.html">Send Money</a>
+  <a href="transactions.html">Transactions</a>
+  <a href="profile.html">Profile</a>
+</div>
+
+<div class="main">
+  <div class="card">
+    <h2>💸 Send Money</h2>
+
+    <input id="email" type="email" placeholder="Receiver Email">
+    <input id="amount" type="number" placeholder="Amount (USD)">
+    <textarea id="note" rows="3" placeholder="Note (gift, work, trade...)"></textarea>
+
+    <button id="sendBtn">Send Money</button>
+
+    <p id="msg" class="msg"></p>
+  </div>
+</div>
+
+<script type="module">
+import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+
+const supabase = createClient(
+  "https://YOUR_PROJECT_ID.supabase.co",
+  "YOUR_PUBLIC_ANON_KEY"
+);
+
+// 🔒 AUTH GUARD
+const { data: { session } } = await supabase.auth.getSession();
+if (!session) location.href = "login.html";
+
+// CURRENT USER
+const { data: { user } } = await supabase.auth.getUser();
+
+// ELEMENTS
+const btn = document.getElementById("sendBtn");
+const msg = document.getElementById("msg");
+
+btn.onclick = async () => {
+  msg.innerText = "";
+  btn.disabled = true;
+
+  const email = document.getElementById("email").value.trim();
+  const amount = Number(document.getElementById("amount").value);
+  const note = document.getElementById("note").value.trim();
+
+  if (!email || !amount || amount <= 0) {
+    msg.innerText = "Enter valid email and amount.";
+    msg.className = "msg error";
+    btn.disabled = false;
+    return;
+  }
+
+  // GET SENDER PROFILE
+  const { data: sender } = await supabase
+    .from("profiles")
+    .select("id, balance")
+    .eq("id", user.id)
+    .single();
+
+  if (sender.balance < amount) {
+    msg.innerText = "Insufficient balance.";
+    msg.className = "msg error";
+    btn.disabled = false;
+    return;
+  }
+
+  // GET RECEIVER BY EMAIL
+  const { data: receiver } = await supabase
+    .from("profiles")
+    .select("id")
+    .eq("email", email)
+    .single();
+
+  if (!receiver) {
+    msg.innerText = "Receiver not found.";
+    msg.className = "msg error";
+    btn.disabled = false;
+    return;
+  }
+
+  // UPDATE BALANCES
+  await supabase
+    .from("profiles")
+    .update({ balance: sender.balance - amount })
+    .eq("id", sender.id);
+
+  await supabase
+    .from("profiles")
+    .update({ balance: supabase.rpc("increment", { x: amount }) })
+    .eq("id", receiver.id);
+
+  // SAVE TRANSACTION
+  await supabase.from("transactions").insert({
+    sender_id: sender.id,
+    receiver_id: receiver.id,
+    amount,
+    note
+  });
+
+  msg.innerText = "✅ Money sent successfully!";
+  msg.className = "msg success";
+
+  document.getElementById("email").value = "";
+  document.getElementById("amount").value = "";
+  document.getElementById("note").value = "";
+
+  btn.disabled = false;
+};
+</script>
+
+</body>
+</html>
