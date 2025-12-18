@@ -8,94 +8,79 @@
     <style>
         body {
             margin: 0;
-            font-family: Arial, Helvetica, sans-serif;
-            background: linear-gradient(135deg, #0a2540, #0f3a63);
-            color: #ffffff;
-            min-height: 100vh;
-        }
-
-        header {
-            padding: 20px 40px;
-            display: flex;
-            align-items: center;
-        }
-
-        header img {
-            height: 45px;
-        }
-
-        .container {
+            font-family: Arial, sans-serif;
+            height: 100vh;
+            background: linear-gradient(135deg, #f4f6fb, #e6ecf5);
             display: flex;
             justify-content: center;
             align-items: center;
+        }
+
+        .home-container {
             text-align: center;
-            min-height: calc(100vh - 100px);
-            padding: 20px;
+            max-width: 600px;
+            padding: 40px;
+        }
+
+        .logo {
+            width: 100px;
+            margin-bottom: 20px;
         }
 
         h1 {
-            font-size: 44px;
-            color: #f6c453;
-            margin-bottom: 15px;
+            font-size: 40px;
+            color: #0a2d4d;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 28px;
+            color: #0a2d4d;
+            margin-bottom: 20px;
         }
 
         p {
-            font-size: 18px;
-            color: #d9e6f2;
-            max-width: 600px;
-            margin: 0 auto 30px;
+            color: #555;
+            font-size: 16px;
+            margin-bottom: 30px;
         }
 
         .btn {
-            background-color: #f6c453;
-            color: #0a2540;
-            padding: 15px 40px;
-            font-size: 18px;
-            border: none;
+            padding: 14px 40px;
             border-radius: 30px;
+            background: #f9c74f;
+            color: #000;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
             cursor: pointer;
             text-decoration: none;
-            font-weight: bold;
-            transition: 0.3s;
         }
 
         .btn:hover {
-            background-color: #ffd77a;
-        }
-
-        footer {
-            text-align: center;
-            padding: 15px;
-            font-size: 14px;
-            color: #a8c1da;
+            background: #f1b90b;
         }
     </style>
 </head>
+
 <body>
 
-    <!-- HEADER WITH LOGO -->
-    <header>
-        <img src="logo.png" alt="TapTrust Logo">
-    </header>
+    <div class="home-container">
 
-    <!-- MAIN CONTENT -->
-    <div class="container">
-        <div>
-            <h1>Bank on Trust.<br>Bank with TapTrust.</h1>
+        <!-- LOGO -->
+        <img src="assets/logo.png" alt="TapTrust Logo" class="logo">
 
-            <p>
-                Secure, modern digital banking you can rely on anytime, anywhere.
-            </p>
+        <h1>TapTrust</h1>
+        <h2>Bank on Trust.</h2>
 
-            <!-- GET STARTED BUTTON -->
-            <a href="login.html" class="btn">Get Started</a>
-        </div>
+        <p>
+            Secure, modern digital banking you can rely on anytime, anywhere.
+        </p>
+
+        <!-- GET STARTED BUTTON -->
+        <a href="login.html" class="btn">Get Started</a>
+
     </div>
-
-    <!-- FOOTER -->
-    <footer>
-        © 2025 TapTrust Bank. All rights reserved.
-    </footer>
 
 </body>
 </html>
