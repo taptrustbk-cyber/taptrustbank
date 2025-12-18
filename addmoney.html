@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Money | TapTrust Bank</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #0a2d4d, #041c32);
+            color: #ffffff;
+            min-height: 100vh;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            background: rgba(0,0,0,0.35);
+        }
+
+        header img {
+            width: 36px;
+            margin-right: 10px;
+        }
+
+        header h1 {
+            color: #f9c74f;
+            font-size: 18px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+        }
+
+        .card {
+            background: rgba(255,255,255,0.08);
+            padding: 20px;
+            border-radius: 16px;
+        }
+
+        h2 {
+            color: #f9c74f;
+            margin-bottom: 15px;
+        }
+
+        label {
+            font-size: 14px;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: none;
+            margin-bottom: 12px;
+            font-size: 14px;
+        }
+
+        input[type="file"] {
+            background: #ffffff;
+            color: #000000;
+        }
+
+        .address {
+            background: #00000040;
+            padding: 10px;
+            border-radius: 8px;
+            word-break: break-all;
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            border-radius: 25px;
+            border: none;
+            background: #f9c74f;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .btn:hover {
+            background: #f1b90b;
+        }
+
+        .status {
+            margin-top: 15px;
+            text-align: center;
+            color: #f9c74f;
+            font-weight: bold;
+        }
+
+        .back {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .back a {
+            color: #f9c74f;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <img src="assets/logo.png" alt="TapTrust Logo">
+    <h1>Add Money</h1>
+</header>
+
+<div class="container">
+
+    <div class="card">
+        <h2>Crypto Deposit</h2>
+
+        <label>Amount ($)</label>
+        <input type="number" placeholder="Enter amount">
+
+        <label>Payment Method</label>
+        <select>
+            <option>USDT (TRC20)</option>
+            <option>Binance Pay</option>
+            <option>OKX</option>
+        </select>
+
+        <label>Send USDT to this address</label>
+        <div class="address">
+            TXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        </div>
+
+        <label>Transaction ID (TXID)</label>
+        <input type="text" placeholder="Paste TXID here">
+
+        <label>Upload Screenshot</label>
+        <input type="file" accept="image/*">
+
+        <button class="btn" onclick="submitDeposit()">
+            Submit Payment
+        </button>
+
+        <div id="status" class="status"></div>
+    </div>
+
+    <div class="back">
+        <a href="dashboard.html">← Back to Dashboard</a>
+    </div>
+
+</div>
+
+<script>
+    function submitDeposit() {
+        document.getElementById("status").innerText =
+            "Deposit submitted successfully. Status: PENDING (Admin review required)";
+    }
+</script>
+
+</body>
+</html>
