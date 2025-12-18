@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>TapTrust – Dashboard</title>
+    <title>Dashboard | TapTrust Bank</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <style>
@@ -27,100 +27,40 @@
         }
 
         header h1 {
-            color: #f9c74f;
             font-size: 18px;
+            color: #f9c74f;
         }
 
         .container {
-            padding: 20px;
-            max-width: 900px;
+            max-width: 700px;
             margin: auto;
+            padding: 20px;
         }
 
         .card {
             background: rgba(255,255,255,0.08);
-            border-radius: 16px;
             padding: 20px;
-            margin-bottom: 20px;
+            border-radius: 16px;
+            margin-bottom: 15px;
         }
 
         h2 {
             color: #f9c74f;
         }
 
-        .balance {
-            font-size: 32px;
-            font-weight: bold;
-            color: #f9c74f;
-        }
-
-        input, select {
-            padding: 10px;
-            width: 100%;
-            border-radius: 8px;
-            border: none;
-            margin-top: 8px;
-            margin-bottom: 12px;
-        }
-
         .btn {
-            padding: 10px 20px;
+            width: 100%;
+            padding: 12px;
             border-radius: 25px;
             border: none;
             background: #f9c74f;
             font-weight: bold;
             cursor: pointer;
+            margin-top: 10px;
         }
 
         .btn:hover {
             background: #f1b90b;
-        }
-
-        .transactions div {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.15);
-        }
-
-        .transactions div:last-child {
-            border-bottom: none;
-        }
-
-        .market-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.15);
-        }
-
-        .market-item:last-child {
-            border-bottom: none;
-        }
-
-        .address-box {
-            background: #00000040;
-            padding: 10px;
-            border-radius: 8px;
-            word-break: break-all;
-            font-size: 14px;
-        }
-
-        .status {
-            margin-top: 10px;
-            color: #f9c74f;
-            font-weight: bold;
-        }
-
-        .logout {
-            text-align: center;
-            margin-top: 30px;
-        }
-
-        .logout a {
-            color: #f9c74f;
-            text-decoration: none;
-            font-weight: bold;
         }
     </style>
 </head>
@@ -128,125 +68,27 @@
 <body>
 
 <header>
-    <img src="assets/logo.png" alt="Logo">
-    <h1>TapTrust Dashboard</h1>
+    <img src="assets/logo.png" alt="TapTrust Logo">
+    <h1>TapTrust Bank</h1>
 </header>
 
 <div class="container">
 
-    <!-- BALANCE -->
     <div class="card">
-        <h2>Account Balance</h2>
-        <div class="balance" id="balance">0</div>
+        <h2>Welcome 👋</h2>
+        <p>Your balance will be shown here.</p>
     </div>
 
-    <!-- ADMIN ADD MONEY (DEMO) -->
     <div class="card">
-        <h2>Admin Add Money (Demo)</h2>
-        <input type="number" id="adminAmount" placeholder="Enter amount">
-        <button class="btn" onclick="adminAdd()">Add Money</button>
-    </div>
+        <h2>Actions</h2>
 
-    <!-- ADD MONEY VIA CRYPTO -->
-    <div class="card">
-        <h2>Add Money (Crypto)</h2>
-
-        <label>Amount ($)</label>
-        <input type="number" id="cryptoAmount" placeholder="Enter amount">
-
-        <label>Payment Method</label>
-        <select>
-            <option>USDT (TRC20)</option>
-            <option>Binance Pay</option>
-            <option>OKX</option>
-        </select>
-
-        <label>Send USDT to this address</label>
-        <div class="address-box">
-            TXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-        </div>
-
-        <label>Transaction ID (TXID)</label>
-        <input type="text" placeholder="Paste TXID here">
-
-        <label>Upload Screenshot</label>
-        <input type="file">
-
-        <button class="btn" onclick="submitPayment()">Submit Payment</button>
-
-        <div id="status" class="status"></div>
-    </div>
-
-    <!-- TRANSACTIONS -->
-    <div class="card">
-        <h2>Transactions</h2>
-        <div class="transactions" id="transactions">
-            <div><span>Initial Balance</span><span>+ $1,000</span></div>
-        </div>
-    </div>
-
-    <!-- MARKET -->
-    <div class="card">
-        <h2>Market</h2>
-
-        <div class="market-item"><span>Item 1</span><button class="btn" onclick="buy(10)">Buy $10</button></div>
-        <div class="market-item"><span>Item 2</span><button class="btn" onclick="buy(20)">Buy $20</button></div>
-        <div class="market-item"><span>Item 3</span><button class="btn" onclick="buy(30)">Buy $30</button></div>
-        <div class="market-item"><span>Item 4</span><button class="btn" onclick="buy(40)">Buy $40</button></div>
-        <div class="market-item"><span>Item 5</span><button class="btn" onclick="buy(50)">Buy $50</button></div>
-        <div class="market-item"><span>Item 6</span><button class="btn" onclick="buy(60)">Buy $60</button></div>
-        <div class="market-item"><span>Item 7</span><button class="btn" onclick="buy(70)">Buy $70</button></div>
-        <div class="market-item"><span>Item 8</span><button class="btn" onclick="buy(80)">Buy $80</button></div>
-        <div class="market-item"><span>Item 9</span><button class="btn" onclick="buy(90)">Buy $90</button></div>
-        <div class="market-item"><span>Item 10</span><button class="btn" onclick="buy(100)">Buy $100</button></div>
-    </div>
-
-    <div class="logout">
-        <a href="index.html">← Logout</a>
+        <!-- ADD MONEY BUTTON -->
+        <button class="btn" onclick="window.location.href='addmoney.html'">
+            Add Money
+        </button>
     </div>
 
 </div>
-
-<script>
-    let balance = 1000;
-
-    function updateBalance() {
-        document.getElementById("balance").innerText = "$" + balance.toFixed(2);
-    }
-
-    function adminAdd() {
-        const amount = Number(document.getElementById("adminAmount").value);
-        if (amount <= 0) return;
-
-        balance += amount;
-        updateBalance();
-
-        const tx = document.createElement("div");
-        tx.innerHTML = `<span>Admin Add</span><span>+ $${amount}</span>`;
-        document.getElementById("transactions").prepend(tx);
-
-        document.getElementById("adminAmount").value = "";
-    }
-
-    function submitPayment() {
-        document.getElementById("status").innerText =
-            "Payment submitted successfully. Status: PENDING (Admin will confirm within 5–30 minutes)";
-    }
-
-    function buy(price) {
-        if (balance < price) {
-            alert("Not enough balance");
-            return;
-        }
-
-        balance -= price;
-        updateBalance();
-
-        const tx = document.createElement("div");
-        tx.innerHTML = `<span>Market Purchase</span><span>- $${price}</span>`;
-        document.getElementById("transactions").prepend(tx);
-    }
-</script>
 
 </body>
 </html>
