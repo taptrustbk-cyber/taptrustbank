@@ -9,140 +9,77 @@
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #061a2e, #0b2c4a);
-    color: white;
-}
-
-/* HEADER */
-header {
+    background: linear-gradient(135deg, #ffffff, #f4f6f8);
+    height: 100vh;
     display: flex;
     align-items: center;
-    padding: 20px 40px;
+    justify-content: center;
+}
+
+.container {
+    text-align: center;
 }
 
 .logo {
-    font-size: 28px;
+    font-size: 36px;
     font-weight: bold;
-    color: #f5c24c;
+    color: #0b2c4a;
+    margin-bottom: 15px;
 }
 
 .logo span {
-    margin-left: 10px;
-}
-
-/* HERO */
-.hero {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    padding: 60px 40px;
-}
-
-.hero-text {
-    max-width: 500px;
-}
-
-.hero-text h1 {
-    font-size: 44px;
-    margin-bottom: 15px;
     color: #f5c24c;
 }
 
-.hero-text p {
-    font-size: 16px;
-    color: #ddd;
-    margin-bottom: 25px;
+h1 {
+    font-size: 42px;
+    color: #0b2c4a;
+    margin-bottom: 10px;
 }
 
-.buttons button {
-    padding: 14px 24px;
+p {
+    color: #555;
+    margin-bottom: 30px;
     font-size: 16px;
-    border-radius: 25px;
-    border: none;
-    cursor: pointer;
-    margin-right: 10px;
 }
 
-.btn-primary {
+button {
+    padding: 14px 35px;
+    font-size: 18px;
     background: #f5c24c;
-    color: #061a2e;
-}
-
-.btn-secondary {
-    background: transparent;
-    color: white;
-    border: 2px solid #f5c24c;
-}
-
-/* LOGIN BOX */
-.login-box {
-    background: rgba(255,255,255,0.08);
-    padding: 30px;
-    border-radius: 15px;
-    width: 320px;
-    backdrop-filter: blur(10px);
-}
-
-.login-box h2 {
-    margin-bottom: 20px;
-    text-align: center;
-    color: #f5c24c;
-}
-
-.login-box input {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 12px;
-    border-radius: 8px;
     border: none;
-}
-
-.login-box button {
-    width: 100%;
-    padding: 12px;
-    background: #f5c24c;
-    color: #061a2e;
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
+    border-radius: 30px;
     cursor: pointer;
+    color: #0b2c4a;
+}
+
+button:hover {
+    opacity: 0.9;
 }
 </style>
 </head>
 
 <body>
 
-<header>
-    <div class="logo">🛡️ <span>TapTrust</span></div>
-</header>
+<div class="container">
 
-<section class="hero">
-    <div class="hero-text">
-        <h1>Bank on Trust.<br>Bank with TapTrust.</h1>
-        <p>Secure, modern digital banking you can rely on anytime, anywhere.</p>
-
-        <div class="buttons">
-            <button class="btn-primary" onclick="window.location.href='login.html'">
-    Get Started
-</button>
-            <button class="btn-secondary">Learn More</button>
-        </div>
+    <!-- LOGO -->
+    <div class="logo">
+        🔐 Tap<span>Trust</span>
     </div>
 
-    <div class="login-box">
-        <h2>Login</h2>
-        <input type="email" placeholder="Email">
-        <input type="password" placeholder="Password">
-        <button onclick="login()">Login</button>
-    </div>
-</section>
+    <!-- TEXT -->
+    <h1>Bank on Trust.</h1>
+    <h1>Bank with TapTrust.</h1>
 
-<script>
-function login() {
-    window.location.href = "dashboard.html";
-}
-</script>
+    <p>Secure, modern digital banking you can rely on.</p>
+
+    <!-- GET STARTED -->
+    <button onclick="window.location.href='login.html'">
+        Get Started
+    </button>
+
+</div>
 
 </body>
 </html>
