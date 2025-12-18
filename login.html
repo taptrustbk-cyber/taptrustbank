@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Login | TapTrust</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #061a2e, #0b2c4a);
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+.login-box {
+    background: rgba(255,255,255,0.08);
+    padding: 35px;
+    border-radius: 15px;
+    width: 350px;
+    backdrop-filter: blur(10px);
+    text-align: center;
+}
+
+.login-box h1 {
+    color: #f5c24c;
+    margin-bottom: 20px;
+}
+
+.login-box input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 12px;
+    border-radius: 8px;
+    border: none;
+    outline: none;
+}
+
+.login-box button {
+    width: 100%;
+    padding: 12px;
+    background: #f5c24c;
+    color: #061a2e;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.back {
+    margin-top: 15px;
+    display: block;
+    color: #ccc;
+    text-decoration: none;
+}
+</style>
+</head>
+
+<body>
+
+<div class="login-box">
+    <h1>TapTrust Login</h1>
+    <input type="email" placeholder="Email">
+    <input type="password" placeholder="Password">
+    <button onclick="login()">Login</button>
+
+    <a class="back" href="index.html">← Back to Home</a>
+</div>
+
+<script>
+function login() {
+    window.location.href = "dashboard.html";
+}
+</script>
+
+</body>
+</html>
