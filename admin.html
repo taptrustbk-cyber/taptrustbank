@@ -1,152 +1,179 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Admin Panel | TapTrust Bank</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <title>TapTrust Admin Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #041c32, #0a2d4d);
-            color: #ffffff;
-            min-height: 100vh;
-        }
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #041b33, #062a4f);
+      color: #fff;
+    }
 
-        header {
-            display: flex;
-            align-items: center;
-            padding: 15px 20px;
-            background: rgba(0,0,0,0.4);
-        }
+    .container {
+      max-width: 1100px;
+      margin: 40px auto;
+      padding: 20px;
+    }
 
-        header img {
-            width: 36px;
-            margin-right: 10px;
-        }
+    h1 {
+      text-align: center;
+      color: #f5c451;
+    }
 
-        header h1 {
-            font-size: 18px;
-            color: #f9c74f;
-        }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 30px;
+      background: #0b2a45;
+      border-radius: 10px;
+      overflow: hidden;
+    }
 
-        .container {
-            max-width: 900px;
-            margin: auto;
-            padding: 20px;
-        }
+    th, td {
+      padding: 12px;
+      text-align: center;
+      border-bottom: 1px solid #123d66;
+    }
 
-        .card {
-            background: rgba(255,255,255,0.08);
-            padding: 20px;
-            border-radius: 16px;
-            margin-bottom: 15px;
-        }
+    th {
+      background: #08243d;
+      color: #f5c451;
+    }
 
-        h2 {
-            color: #f9c74f;
-            margin-bottom: 10px;
-        }
+    tr:hover {
+      background: #0e365a;
+    }
 
-        .row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            font-size: 14px;
-        }
+    button {
+      padding: 6px 12px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
 
-        .row div {
-            flex: 1;
-            min-width: 180px;
-        }
+    .approve {
+      background: #28a745;
+      color: white;
+    }
 
-        .btn {
-            padding: 10px 18px;
-            border-radius: 20px;
-            border: none;
-            cursor: pointer;
-            font-weight: bold;
-            margin-right: 8px;
-        }
+    .reject {
+      background: #dc3545;
+      color: white;
+      margin-left: 5px;
+    }
 
-        .approve {
-            background: #4caf50;
-            color: #ffffff;
-        }
-
-        .reject {
-            background: #e63946;
-            color: #ffffff;
-        }
-
-        .status {
-            margin-top: 10px;
-            font-weight: bold;
-            color: #f9c74f;
-        }
-
-        .back {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        .back a {
-            color: #f9c74f;
-            text-decoration: none;
-            font-weight: bold;
-        }
-    </style>
+    .logout {
+      background: #f5c451;
+      color: #000;
+      float: right;
+      margin-top: -50px;
+    }
+  </style>
 </head>
 
 <body>
+  <div class="container">
+    <button class="logout" onclick="logout()">Logout</button>
+    <h1>TapTrust – Admin Deposits</h1>
 
-<header>
-    <img src="assets/logo.png" alt="TapTrust Logo">
-    <h1>Admin Panel</h1>
-</header>
-
-<div class="container">
-
-    <h2>Pending Deposits</h2>
-
-    <!-- PAYMENT REQUEST -->
-    <div class="card">
-        <div class="row">
-            <div><strong>User:</strong> customer@email.com</div>
-            <div><strong>Amount:</strong> $500</div>
-            <div><strong>Method:</strong> USDT (TRC20)</div>
-            <div><strong>TXID:</strong> abc123xyz...</div>
-        </div>
-
-        <div class="status">Status: PENDING</div>
-
-        <div style="margin-top:10px;">
-            <button class="btn approve" onclick="approve(this)">
-                Approve
-            </button>
-            <button class="btn reject" onclick="reject(this)">
-                Reject
-            </button>
-        </div>
-    </div>
-
-    <div class="back">
-        <a href="dashboard.html">← Back to Dashboard</a>
-    </div>
-
-</div>
+    <table>
+      <thead>
+        <tr>
+          <th>Email</th>
+          <th>Amount</th>
+          <th>Method</th>
+          <th>TXID</th>
+          <th>Status</th>
+          <th>Date</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="depositTable"></tbody>
+    </table>
+  </div>
 
 <script>
-    function approve(btn) {
-        btn.closest('.card').querySelector('.status').innerText =
-            "Status: APPROVED (Balance Added)";
-    }
+/* ================= CONFIG ================= */
+const SUPABASE_URL = "https://YOUR_PROJECT_ID.supabase.co";
+const SUPABASE_ANON_KEY = "YOUR_PUBLIC_ANON_KEY";
+const ADMIN_EMAIL = "admin@taptrust.com";
 
-    function reject(btn) {
-        btn.closest('.card').querySelector('.status').innerText =
-            "Status: REJECTED";
-    }
+/* ================= INIT ================= */
+const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+/* ================= AUTH CHECK ================= */
+async function checkAdmin() {
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user || user.email !== ADMIN_EMAIL) {
+    alert("Access denied");
+    window.location.href = "login.html";
+  }
+}
+
+/* ================= LOAD DEPOSITS ================= */
+async function loadDeposits() {
+  const { data, error } = await supabase
+    .from("deposit")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    alert("Error loading deposits");
+    return;
+  }
+
+  const table = document.getElementById("depositTable");
+  table.innerHTML = "";
+
+  data.forEach(d => {
+    table.innerHTML += `
+      <tr>
+        <td>${d.email}</td>
+        <td>$${d.amount}</td>
+        <td>${d.method}</td>
+        <td>${d.txid}</td>
+        <td>${d.status}</td>
+        <td>${new Date(d.created_at).toLocaleString()}</td>
+        <td>
+          ${d.status === "pending" ? `
+            <button class="approve" onclick="updateStatus('${d.id}','approved')">Approve</button>
+            <button class="reject" onclick="updateStatus('${d.id}','rejected')">Reject</button>
+          ` : "-"}
+        </td>
+      </tr>
+    `;
+  });
+}
+
+/* ================= UPDATE STATUS ================= */
+async function updateStatus(id, status) {
+  const { error } = await supabase
+    .from("deposit")
+    .update({ status })
+    .eq("id", id);
+
+  if (error) {
+    alert("Update failed");
+  } else {
+    loadDeposits();
+  }
+}
+
+/* ================= LOGOUT ================= */
+async function logout() {
+  await supabase.auth.signOut();
+  window.location.href = "login.html";
+}
+
+/* ================= START ================= */
+checkAdmin();
+loadDeposits();
 </script>
 
 </body>
