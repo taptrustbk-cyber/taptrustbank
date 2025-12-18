@@ -1,126 +1,50 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>TapTrust Login</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            height: 100vh;
-            background: linear-gradient(135deg, #041a33, #0a2d4d);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .login-box {
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(10px);
-            padding: 40px;
-            border-radius: 16px;
-            width: 100%;
-            max-width: 380px;
-            text-align: center;
-            color: #fff;
-        }
-
-        .logo {
-            width: 80px;
-            margin-bottom: 15px;
-        }
-
-        h2 {
-            color: #f9c74f;
-            margin-bottom: 20px;
-        }
-
-        input {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 15px;
-            border-radius: 8px;
-            border: none;
-            outline: none;
-            font-size: 14px;
-        }
-
-        button {
-            width: 100%;
-            padding: 12px;
-            border-radius: 25px;
-            border: none;
-            background: #f9c74f;
-            font-size: 16px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        button:hover {
-            background: #f1b90b;
-        }
-
-        .signup-text {
-            margin-top: 15px;
-            font-size: 14px;
-        }
-
-        .signup-text a {
-            color: #f9c74f;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .back-home {
-            margin-top: 10px;
-        }
-
-        .back-home a {
-            color: #ddd;
-            text-decoration: none;
-            font-size: 13px;
-        }
-    </style>
+  <title>TapTrust Login</title>
 </head>
-
 <body>
+  <h2>Login</h2>
 
-    <div class="login-box">
+  <input id="email" placeholder="Email"><br><br>
+  <input id="password" type="password" placeholder="Password"><br><br>
+  <button id="loginBtn">Login</button>
 
-        <!-- LOGO (FIXED) -->
-        <img src="assets/logo.png" alt="TapTrust Logo" class="logo">
+  <p id="msg" style="color:red;"></p>
 
-        <h2>Login</h2>
+  <script type="module">
+    import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 
-        <input type="email" placeholder="Email">
-        <input type="password" placeholder="Password">
+    const supabase = createClient(
+      "YOUR_SUPABASE_URL",
+      "YOUR_ANON_KEY"
+    );
 
-        <button onclick="login()">Login</button>
+    document.getElementById("loginBtn").onclick = async () => {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
 
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password
+      });
 
-        <div class="signup-text">
-            Don’t have an account?
-            <a href="signup.html">Sign up</a>
-        </div>
+      if (error) {
+        document.getElementById("msg").innerText = error.message;
+        return;
+      }
 
-        <div class="back-home">
-            <a href="index.html">← Back to Home</a>
-        </div>
+      // 🔒 BLOCK UNVERIFIED EMAILS
+      if (!data.user.email_confirmed_at) {
+        document.getElementById("msg").innerText =
+          "Please verify your email before login.";
+        await supabase.auth.signOut();
+        return;
+      }
 
-    </div>
-</div>
-
-<script>
-    function login() {
-        // demo login (no backend yet)
-        window.location.href = "dashboard.html";
-    }
-</script>
-
-</body>
-</html>
-
+      // ✅ VERIFIED USER ONLY
+      window.location.href = "dashboard.html";
+    };
+  </script>
 </body>
 </html>
