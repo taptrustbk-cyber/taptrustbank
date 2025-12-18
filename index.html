@@ -1,98 +1,145 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>TapTrust Bank - Login</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<title>TapTrust Bank</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #061a2e, #0b2c4a);
+    color: white;
+}
 
-        .login-box {
-            background: white;
-            width: 320px;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-            text-align: center;
-        }
+/* HEADER */
+header {
+    display: flex;
+    align-items: center;
+    padding: 20px 40px;
+}
 
-        .login-box h1 {
-            margin-bottom: 5px;
-            color: #203a43;
-        }
+.logo {
+    font-size: 28px;
+    font-weight: bold;
+    color: #f5c24c;
+}
 
-        .login-box p {
-            margin-bottom: 20px;
-            color: #666;
-            font-size: 14px;
-        }
+.logo span {
+    margin-left: 10px;
+}
 
-        input {
-            width: 100%;
-            padding: 12px;
-            margin: 10px 0;
-            border-radius: 8px;
-            border: 1px solid #ccc;
-            font-size: 14px;
-        }
+/* HERO */
+.hero {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    padding: 60px 40px;
+}
 
-        button {
-            width: 100%;
-            padding: 12px;
-            background: #203a43;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            cursor: pointer;
-        }
+.hero-text {
+    max-width: 500px;
+}
 
-        button:hover {
-            background: #2c5364;
-        }
+.hero-text h1 {
+    font-size: 44px;
+    margin-bottom: 15px;
+    color: #f5c24c;
+}
 
-        .signup {
-            margin-top: 15px;
-            font-size: 14px;
-        }
+.hero-text p {
+    font-size: 16px;
+    color: #ddd;
+    margin-bottom: 25px;
+}
 
-        .signup a {
-            color: #203a43;
-            text-decoration: none;
-            font-weight: bold;
-        }
-    </style>
+.buttons button {
+    padding: 14px 24px;
+    font-size: 16px;
+    border-radius: 25px;
+    border: none;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.btn-primary {
+    background: #f5c24c;
+    color: #061a2e;
+}
+
+.btn-secondary {
+    background: transparent;
+    color: white;
+    border: 2px solid #f5c24c;
+}
+
+/* LOGIN BOX */
+.login-box {
+    background: rgba(255,255,255,0.08);
+    padding: 30px;
+    border-radius: 15px;
+    width: 320px;
+    backdrop-filter: blur(10px);
+}
+
+.login-box h2 {
+    margin-bottom: 20px;
+    text-align: center;
+    color: #f5c24c;
+}
+
+.login-box input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 12px;
+    border-radius: 8px;
+    border: none;
+}
+
+.login-box button {
+    width: 100%;
+    padding: 12px;
+    background: #f5c24c;
+    color: #061a2e;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+}
+</style>
 </head>
+
 <body>
 
-<div class="login-box">
-    <h1>TapTrust Bank</h1>
-    <p>Secure Digital Banking</p>
+<header>
+    <div class="logo">🛡️ <span>TapTrust</span></div>
+</header>
 
-    <input type="email" placeholder="Email address">
-    <input type="password" placeholder="Password">
+<section class="hero">
+    <div class="hero-text">
+        <h1>Bank on Trust.<br>Bank with TapTrust.</h1>
+        <p>Secure, modern digital banking you can rely on anytime, anywhere.</p>
 
-    <button onclick="login()">Login</button>
-
-    <div class="signup">
-        Don’t have an account?
-        <a href="#">Sign up</a>
+        <div class="buttons">
+            <button class="btn-primary">Get Started</button>
+            <button class="btn-secondary">Learn More</button>
+        </div>
     </div>
-</div>
+
+    <div class="login-box">
+        <h2>Login</h2>
+        <input type="email" placeholder="Email">
+        <input type="password" placeholder="Password">
+        <button onclick="login()">Login</button>
+    </div>
+</section>
 
 <script>
-    function login() {
-        window.location.href = "dashboard.html";
-    }
+function login() {
+    window.location.href = "dashboard.html";
+}
 </script>
 
 </body>
