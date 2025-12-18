@@ -1,110 +1,143 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>TapTrust – Sign Up</title>
-<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+  <meta charset="UTF-8" />
+  <title>Create TapTrust Account</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<style>
-body {
-  margin: 0;
-  height: 100vh;
-  background: linear-gradient(135deg, #0f172a, #020617);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-family: Arial, sans-serif;
-}
+  <!-- Supabase SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-.card {
-  background: #fff;
-  width: 380px;
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 15px 40px rgba(0,0,0,.3);
-}
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: linear-gradient(135deg, #0a1a33, #000814);
+      font-family: Arial, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-.card img {
-  width: 60px;
-  display: block;
-  margin: 0 auto 10px;
-}
+    .card {
+      background: #ffffff;
+      padding: 35px;
+      width: 360px;
+      border-radius: 12px;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+      text-align: center;
+    }
 
-.card h2 {
-  text-align: center;
-  margin-bottom: 20px;
-}
+    .logo {
+      font-size: 22px;
+      font-weight: bold;
+      color: #0033cc;
+      margin-bottom: 10px;
+    }
 
-input {
-  width: 100%;
-  padding: 12px;
-  margin-top: 10px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-}
+    h2 {
+      margin-bottom: 20px;
+      color: #111;
+    }
 
-button {
-  width: 100%;
-  margin-top: 15px;
-  padding: 12px;
-  background: #2563eb;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-}
+    input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 14px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
 
-.msg {
-  margin-top: 10px;
-  text-align: center;
-  font-size: 14px;
-}
-</style>
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 15px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #1e40af;
+    }
+
+    .msg {
+      margin-top: 15px;
+      font-size: 14px;
+    }
+
+    .login-link {
+      margin-top: 15px;
+      font-size: 13px;
+    }
+
+    .login-link a {
+      color: #2563eb;
+      text-decoration: none;
+    }
+  </style>
 </head>
 
 <body>
 
-<div class="card">
-  <img src="Logo.png">
-  <h2>Create TapTrust Account</h2>
+  <div class="card">
+    <div class="logo">🏦 TapTrust Bank</div>
+    <h2>Create Account</h2>
 
-  <input id="email" type="email" placeholder="Email">
-  <input id="password" type="password" placeholder="Password">
+    <input type="email" id="email" placeholder="Email address" />
+    <input type="password" id="password" placeholder="Password (min 6 chars)" />
 
-  <button onclick="signup()">Sign Up</button>
-  <div class="msg" id="msg"></div>
-</div>
+    <button onclick="signup()">Sign Up</button>
+
+    <div class="msg" id="message"></div>
+
+    <div class="login-link">
+      Already have an account?
+      <a href="login.html">Login</a>
+    </div>
+  </div>
 
 <script>
-const SUPABASE_URL = "https://lghhofyhzopfnibodsjw.supabase.co";
-const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxnaGhvZnloem9wZm5pYm9kc2p3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU5OTAzODEsImV4cCI6MjA4MTU2NjM4MX0.oTxQ7U5HcP9OO7rAuMN7awk1EQQn_TuDrL-AZ-uK-5w";
+  const SUPABASE_URL = "https://lghhofyhzopfnibodsjw.supabase.co";
+  const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxnaGhvZnloem9wZm5pYm9kc2p3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU5OTAzODEsImV4cCI6MjA4MTU2NjM4MX0.oTxQ7U5HcP9OO7rAuMN7awk1EQQn_TuDrL-AZ-uK-5w";
 
-const supabaseClient = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_ANON_KEY
-);
+  const supabase = supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY
+  );
 
-async function signup() {
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
-  const msg = document.getElementById("msg");
+  async function signup() {
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value.trim();
+    const message = document.getElementById("message");
 
-  msg.innerText = "Creating account...";
+    message.style.color = "red";
+    message.innerText = "";
 
-  const { error } = await supabaseClient.auth.signUp({
-    email,
-    password,
-    options: {
-      emailRedirectTo: window.location.origin + "/login.html"
+    if (!email || !password) {
+      message.innerText = "Please fill all fields";
+      return;
     }
-  });
 
-  if (error) {
-    msg.innerText = error.message;
-  } else {
-    msg.innerText = "Check your email to confirm your account.";
+    const { data, error } = await supabase.auth.signUp({
+      email: email,
+      password: password,
+      options: {
+        emailRedirectTo: window.location.origin + "/login.html"
+      }
+    });
+
+    if (error) {
+      message.innerText = error.message;
+    } else {
+      message.style.color = "green";
+      message.innerText =
+        "Signup successful! Check your email to confirm your account.";
+    }
   }
-}
 </script>
 
 </body>
