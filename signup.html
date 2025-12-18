@@ -2,16 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Sign Up | TapTrust Bank</title>
+    <title>TapTrust – Sign Up</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <style>
         body {
             margin: 0;
-            font-family: Arial, Helvetica, sans-serif;
-            background: linear-gradient(135deg, #0a2540, #0f3a63);
-            color: #ffffff;
-            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            height: 100vh;
+            background: linear-gradient(135deg, #0a2d4d, #041c32);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -20,48 +19,45 @@
         .signup-box {
             background: rgba(255, 255, 255, 0.08);
             padding: 40px;
-            border-radius: 16px;
-            width: 100%;
-            max-width: 400px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            border-radius: 15px;
+            width: 350px;
             text-align: center;
+            backdrop-filter: blur(10px);
         }
 
-        .signup-box img {
-            height: 50px;
-            margin-bottom: 20px;
+        .logo {
+            width: 70px;
+            margin-bottom: 15px;
         }
 
         h2 {
+            color: #f9c74f;
             margin-bottom: 20px;
-            color: #f6c453;
         }
 
         input {
             width: 100%;
-            padding: 14px;
+            padding: 12px;
             margin-bottom: 15px;
             border-radius: 8px;
             border: none;
-            font-size: 16px;
             outline: none;
+            font-size: 14px;
         }
 
-        .btn {
+        button {
             width: 100%;
-            padding: 14px;
-            background-color: #f6c453;
-            color: #0a2540;
+            padding: 12px;
+            border-radius: 30px;
             border: none;
-            border-radius: 25px;
+            background: #f9c74f;
             font-size: 16px;
             font-weight: bold;
             cursor: pointer;
-            transition: 0.3s;
         }
 
-        .btn:hover {
-            background-color: #ffd77a;
+        button:hover {
+            background: #f1b90b;
         }
 
         .links {
@@ -70,7 +66,7 @@
         }
 
         .links a {
-            color: #f6c453;
+            color: #f9c74f;
             text-decoration: none;
         }
 
@@ -79,27 +75,28 @@
         }
     </style>
 </head>
+
 <body>
 
     <div class="signup-box">
+
         <!-- LOGO -->
-        <img src="logo.png" alt="TapTrust Logo">
+        <img src="assets/logo.png" alt="TapTrust Logo" class="logo">
 
         <h2>Create Account</h2>
 
-        <!-- SIGNUP FORM -->
-        <form>
-            <input type="text" placeholder="Full Name" required>
-            <input type="email" placeholder="Email" required>
-            <input type="password" placeholder="Password" required>
+        <input type="text" placeholder="Full Name">
+        <input type="email" placeholder="Email">
+        <input type="password" placeholder="Password">
+        <input type="password" placeholder="Confirm Password">
 
-            <button class="btn" type="submit">Sign Up</button>
-        </form>
+        <button>Create Account</button>
 
         <div class="links">
-            <p>Already have an account? <a href="login.html">Login</a></p>
-            <p><a href="index.html">← Back to Home</a></p>
+            Already have an account?
+            <a href="login.html">Login</a>
         </div>
+
     </div>
 
 </body>
