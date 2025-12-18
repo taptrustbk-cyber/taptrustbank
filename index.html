@@ -1,85 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>TapTrust Bank</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>TapTrust Bank</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<style>
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #ffffff, #f4f6f8);
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: linear-gradient(135deg, #0a2540, #0f3a63);
+            color: #ffffff;
+            min-height: 100vh;
+        }
 
-.container {
-    text-align: center;
-}
+        header {
+            padding: 20px 40px;
+            display: flex;
+            align-items: center;
+        }
 
-.logo {
-    font-size: 36px;
-    font-weight: bold;
-    color: #0b2c4a;
-    margin-bottom: 15px;
-}
+        header img {
+            height: 45px;
+        }
 
-.logo span {
-    color: #f5c24c;
-}
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            min-height: calc(100vh - 100px);
+            padding: 20px;
+        }
 
-h1 {
-    font-size: 42px;
-    color: #0b2c4a;
-    margin-bottom: 10px;
-}
+        h1 {
+            font-size: 44px;
+            color: #f6c453;
+            margin-bottom: 15px;
+        }
 
-p {
-    color: #555;
-    margin-bottom: 30px;
-    font-size: 16px;
-}
+        p {
+            font-size: 18px;
+            color: #d9e6f2;
+            max-width: 600px;
+            margin: 0 auto 30px;
+        }
 
-button {
-    padding: 14px 35px;
-    font-size: 18px;
-    background: #f5c24c;
-    border: none;
-    border-radius: 30px;
-    cursor: pointer;
-    color: #0b2c4a;
-}
+        .btn {
+            background-color: #f6c453;
+            color: #0a2540;
+            padding: 15px 40px;
+            font-size: 18px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.3s;
+        }
 
-button:hover {
-    opacity: 0.9;
-}
-</style>
+        .btn:hover {
+            background-color: #ffd77a;
+        }
+
+        footer {
+            text-align: center;
+            padding: 15px;
+            font-size: 14px;
+            color: #a8c1da;
+        }
+    </style>
 </head>
-
 <body>
 
-<div class="container">
+    <!-- HEADER WITH LOGO -->
+    <header>
+        <img src="logo.png" alt="TapTrust Logo">
+    </header>
 
-    <!-- LOGO -->
-    <div class="logo">
-        🔐 Tap<span>Trust</span>
+    <!-- MAIN CONTENT -->
+    <div class="container">
+        <div>
+            <h1>Bank on Trust.<br>Bank with TapTrust.</h1>
+
+            <p>
+                Secure, modern digital banking you can rely on anytime, anywhere.
+            </p>
+
+            <!-- GET STARTED BUTTON -->
+            <a href="login.html" class="btn">Get Started</a>
+        </div>
     </div>
 
-    <!-- TEXT -->
-    <h1>Bank on Trust.</h1>
-    <h1>Bank with TapTrust.</h1>
-
-    <p>Secure, modern digital banking you can rely on.</p>
-
-    <!-- GET STARTED -->
-    <button onclick="window.location.href='login.html'">
-        Get Started
-    </button>
-
-</div>
+    <!-- FOOTER -->
+    <footer>
+        © 2025 TapTrust Bank. All rights reserved.
+    </footer>
 
 </body>
 </html>
