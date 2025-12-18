@@ -1,132 +1,50 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
   <meta charset="UTF-8">
-  <title>TapTrust | Login</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f5f7fb;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-    .box {
-      background: white;
-      padding: 25px;
-      width: 100%;
-      max-width: 380px;
-      border-radius: 10px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-    }
-    h2 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-    input {
-      width: 100%;
-      padding: 12px;
-      margin-bottom: 12px;
-      border: 1px solid #ddd;
-      border-radius: 6px;
-      font-size: 15px;
-    }
-    button {
-      width: 100%;
-      padding: 12px;
-      background: #2563eb;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      font-size: 16px;
-      cursor: pointer;
-    }
-    button:disabled {
-      background: #94a3b8;
-      cursor: not-allowed;
-    }
-    .msg {
-      margin-top: 12px;
-      font-size: 14px;
-      text-align: center;
-    }
-    .error { color: red; }
-    .success { color: green; }
-  </style>
+  <title>TapTrust Login</title>
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 </head>
-
 <body>
-  <div class="box">
-    <h2>🏦 TapTrust Login</h2>
 
-    <input id="email" type="email" placeholder="Email" required>
-    <input id="password" type="password" placeholder="Password" required>
+<h2>Login</h2>
 
-    <button id="loginBtn">Login</button>
+<input id="email" type="email" placeholder="Email"><br><br>
+<input id="password" type="password" placeholder="Password"><br><br>
 
-    <p id="msg" class="msg"></p>
+<button type="button" onclick="login()">Login</button>
 
-    <p style="text-align:center;margin-top:15px;">
-      Don’t have an account?
-      <a href="signup.html">Sign up</a>
-    </p>
-  </div>
+<p id="msg"></p>
 
-  <script type="module">
-    import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+<script>
+  const SUPABASE_URL = "https://lghhofyhzopfnibodsjw.supabase.co";
+  const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxnaGhvZnloem9wZm5pYm9kc2p3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU5OTAzODEsImV4cCI6MjA4MTU2NjM4MX0.oTxQ7U5HcP9OO7rAuMN7awk1EQQn_TuDrL-AZ-uK-5w";
 
-    // 🔑 CHANGE THESE
-    const SUPABASE_URL = "https://lghhofyhzopfnibodsjw.supabase.co
-";
-    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxnaGhvZnloem9wZm5pYm9kc2p3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU5OTAzODEsImV4cCI6MjA4MTU2NjM4MX0.oTxQ7U5HcP9OO7rAuMN7awk1EQQn_TuDrL-AZ-uK-5w";
+  const supabaseClient = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY
+  );
 
-    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-    const btn = document.getElementById("loginBtn");
+  async function login() {
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
     const msg = document.getElementById("msg");
 
-    btn.onclick = async () => {
-      msg.innerText = "";
-      btn.disabled = true;
+    msg.innerText = "Logging in...";
 
-      const email = document.getElementById("email").value.trim();
-      const password = document.getElementById("password").value;
+    const { error } = await supabaseClient.auth.signInWithPassword({
+      email,
+      password
+    });
 
-      if (!email || !password) {
-        msg.innerText = "Email and password are required.";
-        msg.className = "msg error";
-        btn.disabled = false;
-        return;
-      }
+    if (error) {
+      msg.innerText = "Incorrect email or password";
+      return;
+    }
 
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password
-      });
+    window.location.href = "dashboard.html";
+  }
+</script>
 
-      // ❌ WRONG DETAILS OR NO ACCOUNT
-      if (error) {
-        msg.innerText = "Incorrect email or password.";
-        msg.className = "msg error";
-        btn.disabled = false;
-        return;
-      }
-
-      // ❌ EMAIL NOT VERIFIED
-      if (!data.user.email_confirmed_at) {
-        msg.innerText = "Please verify your email before login.";
-        msg.className = "msg error";
-        await supabase.auth.signOut();
-        btn.disabled = false;
-        return;
-      }
-
-      // ✅ LOGIN SUCCESS
-      window.location.href = "dashboard.html";
-    };
-  </script>
 </body>
 </html>
