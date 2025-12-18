@@ -1,94 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Dashboard | TapTrust Bank</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <title>TapTrust Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #0a2d4d, #041c32);
-            color: #ffffff;
-            min-height: 100vh;
-        }
-
-        header {
-            display: flex;
-            align-items: center;
-            padding: 15px 20px;
-            background: rgba(0,0,0,0.35);
-        }
-
-        header img {
-            width: 36px;
-            margin-right: 10px;
-        }
-
-        header h1 {
-            font-size: 18px;
-            color: #f9c74f;
-        }
-
-        .container {
-            max-width: 700px;
-            margin: auto;
-            padding: 20px;
-        }
-
-        .card {
-            background: rgba(255,255,255,0.08);
-            padding: 20px;
-            border-radius: 16px;
-            margin-bottom: 15px;
-        }
-
-        h2 {
-            color: #f9c74f;
-        }
-
-        .btn {
-            width: 100%;
-            padding: 12px;
-            border-radius: 25px;
-            border: none;
-            background: #f9c74f;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-
-        .btn:hover {
-            background: #f1b90b;
-        }
-    </style>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f7fb;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 600px;
+      margin: 40px auto;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+    h2 {
+      text-align: center;
+    }
+    .box {
+      margin-top: 20px;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 15px;
+      background: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #1e40af;
+    }
+  </style>
 </head>
 
 <body>
+  <div class="container">
+    <h2>🏦 TapTrust Dashboard</h2>
 
-<header>
-    <img src="assets/logo.png" alt="TapTrust Logo">
-    <h1>TapTrust Bank</h1>
-</header>
-
-<div class="container">
-
-    <div class="card">
-        <h2>Welcome 👋</h2>
-        <p>Your balance will be shown here.</p>
+    <div class="box">
+      <p><strong>Email:</strong> <span id="email">Loading...</span></p>
+      <p><strong>Balance:</strong> $<span id="balance">0</span></p>
     </div>
 
-    <div class="card">
-        <h2>Actions</h2>
+    <button id="logout">Logout</button>
+  </div>
 
-        <!-- ADD MONEY BUTTON -->
-        <button class="btn" onclick="window.location.href='addmoney.html'">
-            Add Money
-        </button>
-    </div>
+  <script type="module">
+    import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 
-</div>
+    // 🔑 CHANGE THESE
+    const SUPABASE_URL = "https://YOUR_PROJECT_ID.supabase.co";
+    const SUPABASE_ANON_KEY = "YOUR_PUBLIC_ANON_KEY";
 
+    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    // 🔒 AUTH GUARD (BLOCK UNAUTHORIZED ACCESS)
+    const { data: { session } } = await supabase.auth.getSession();
+
+    if (!session) {
+      window.location.href = "/login.html";
+      throw new Error("Not authenticated");
+    }
+
+    // ✅ GET LOGGED-IN USER
+    const { data: { user } } = await supabase.auth.getUser();
+
+    // 📦 FETCH USER PROFILE (RLS PROTECTED)
+    const { data: profile, error } = await supabase
+      .from("profiles")
+      .select("email, balance")
+      .eq("id", user.id)
+      .single();
+
+    if (error) {
+      alert("Error loading profile");
+      console.error(error);
+    } else {
+      document.getElementById("email").innerText = profile.email;
+      document.getElementById("balance").innerText = profile.balance;
+    }
+
+    // 🚪 LOGOUT
+    document.getElementById("logout").addEventListener("click", async () => {
+      await supabase.auth.signOut();
+      window.location.href = "/login.html";
+    });
+  </script>
 </body>
 </html>
