@@ -1,103 +1,133 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>TapTrust – Sign Up</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <title>TapTrust | Sign Up</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            height: 100vh;
-            background: linear-gradient(135deg, #0a2d4d, #041c32);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .signup-box {
-            background: rgba(255, 255, 255, 0.08);
-            padding: 40px;
-            border-radius: 15px;
-            width: 350px;
-            text-align: center;
-            backdrop-filter: blur(10px);
-        }
-
-        .logo {
-            width: 70px;
-            margin-bottom: 15px;
-        }
-
-        h2 {
-            color: #f9c74f;
-            margin-bottom: 20px;
-        }
-
-        input {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 15px;
-            border-radius: 8px;
-            border: none;
-            outline: none;
-            font-size: 14px;
-        }
-
-        button {
-            width: 100%;
-            padding: 12px;
-            border-radius: 30px;
-            border: none;
-            background: #f9c74f;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background: #f1b90b;
-        }
-
-        .links {
-            margin-top: 15px;
-            font-size: 14px;
-        }
-
-        .links a {
-            color: #f9c74f;
-            text-decoration: none;
-        }
-
-        .links a:hover {
-            text-decoration: underline;
-        }
-    </style>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f7fb;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .box {
+      background: white;
+      padding: 25px;
+      width: 100%;
+      max-width: 380px;
+      border-radius: 10px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 12px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 15px;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:disabled {
+      background: #94a3b8;
+      cursor: not-allowed;
+    }
+    .msg {
+      margin-top: 12px;
+      font-size: 14px;
+      text-align: center;
+    }
+    .error { color: red; }
+    .success { color: green; }
+  </style>
 </head>
 
 <body>
+  <div class="box">
+    <h2>🏦 Create TapTrust Account</h2>
 
-    <div class="signup-box">
+    <input id="email" type="email" placeholder="Email" required>
+    <input id="password" type="password" placeholder="Password (min 6 chars)" required>
 
-        <!-- LOGO -->
-        <img src="assets/logo.png" alt="TapTrust Logo" class="logo">
+    <button id="signupBtn">Sign Up</button>
 
-        <h2>Create Account</h2>
+    <p id="msg" class="msg"></p>
 
-        <input type="text" placeholder="Full Name">
-        <input type="email" placeholder="Email">
-        <input type="password" placeholder="Password">
-        <input type="password" placeholder="Confirm Password">
+    <p style="text-align:center;margin-top:15px;">
+      Already have an account?
+      <a href="login.html">Login</a>
+    </p>
+  </div>
 
-        <button>Create Account</button>
+  <script type="module">
+    import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 
-        <div class="links">
-            Already have an account?
-            <a href="login.html">Login</a>
-        </div>
+    // 🔑 CHANGE THESE
+    const SUPABASE_URL = "https://lghhofyhzopfnibodsjw.supabase.co
+";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxnaGhvZnloem9wZm5pYm9kc2p3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU5OTAzODEsImV4cCI6MjA4MTU2NjM4MX0.oTxQ7U5HcP9OO7rAuMN7awk1EQQn_TuDrL-AZ-uK-5w";
 
-    </div>
+    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+    const btn = document.getElementById("signupBtn");
+    const msg = document.getElementById("msg");
+
+    btn.onclick = async () => {
+      msg.innerText = "";
+      btn.disabled = true;
+
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
+
+      if (!email || !password) {
+        msg.innerText = "Email and password required.";
+        msg.className = "msg error";
+        btn.disabled = false;
+        return;
+      }
+
+      if (password.length < 6) {
+        msg.innerText = "Password must be at least 6 characters.";
+        msg.className = "msg error";
+        btn.disabled = false;
+        return;
+      }
+
+      const { error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: window.location.origin + "/login.html"
+        }
+      });
+
+      if (error) {
+        msg.innerText = error.message;
+        msg.className = "msg error";
+        btn.disabled = false;
+        return;
+      }
+
+      msg.innerText =
+        "✅ Account created! Please check your email and verify before login.";
+      msg.className = "msg success";
+    };
+  </script>
 </body>
 </html>
