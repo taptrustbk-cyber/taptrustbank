@@ -9,46 +9,94 @@
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            min-height: 100vh;
             background: linear-gradient(135deg, #0a2d4d, #041c32);
-            color: white;
+            color: #ffffff;
+            min-height: 100vh;
         }
 
         header {
             display: flex;
             align-items: center;
-            padding: 20px;
-            background: rgba(0,0,0,0.3);
+            padding: 15px 20px;
+            background: rgba(0,0,0,0.35);
         }
 
         header img {
-            width: 40px;
+            width: 36px;
             margin-right: 10px;
         }
 
         header h1 {
             color: #f9c74f;
-            font-size: 20px;
+            font-size: 18px;
         }
 
         .container {
-            padding: 30px;
+            padding: 20px;
+            max-width: 900px;
+            margin: auto;
         }
 
         .card {
             background: rgba(255,255,255,0.08);
+            border-radius: 16px;
             padding: 20px;
-            border-radius: 15px;
             margin-bottom: 20px;
         }
 
-        .card h2 {
+        .balance {
+            font-size: 32px;
+            font-weight: bold;
             color: #f9c74f;
         }
 
+        .btn {
+            padding: 10px 20px;
+            border-radius: 25px;
+            border: none;
+            background: #f9c74f;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            background: #f1b90b;
+        }
+
+        input {
+            padding: 10px;
+            width: 100%;
+            border-radius: 8px;
+            border: none;
+            margin-top: 10px;
+        }
+
+        .transactions div {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.15);
+        }
+
+        .transactions div:last-child {
+            border-bottom: none;
+        }
+
+        .market-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.15);
+        }
+
+        .market-item:last-child {
+            border-bottom: none;
+        }
+
         .logout {
-            margin-top: 30px;
             text-align: center;
+            margin-top: 30px;
         }
 
         .logout a {
@@ -68,14 +116,41 @@
 
 <div class="container">
 
+    <!-- BALANCE -->
     <div class="card">
         <h2>Account Balance</h2>
-        <p>$12,450.00</p>
+        <div class="balance" id="balance">$1,000.00</div>
     </div>
 
+    <!-- ADD MONEY -->
     <div class="card">
-        <h2>Recent Activity</h2>
-        <p>No transactions yet</p>
+        <h2>Add Money (Manual)</h2>
+        <input type="number" id="addAmount" placeholder="Enter amount">
+        <button class="btn" onclick="addMoney()">Add Money</button>
+    </div>
+
+    <!-- TRANSACTIONS -->
+    <div class="card">
+        <h2>Transactions</h2>
+        <div class="transactions" id="transactions">
+            <div><span>Initial Balance</span><span>+ $1,000</span></div>
+        </div>
+    </div>
+
+    <!-- MARKET -->
+    <div class="card">
+        <h2>Market</h2>
+
+        <div class="market-item"><span>Item 1</span><button class="btn" onclick="buy(10)">Buy $10</button></div>
+        <div class="market-item"><span>Item 2</span><button class="btn" onclick="buy(20)">Buy $20</button></div>
+        <div class="market-item"><span>Item 3</span><button class="btn" onclick="buy(30)">Buy $30</button></div>
+        <div class="market-item"><span>Item 4</span><button class="btn" onclick="buy(40)">Buy $40</button></div>
+        <div class="market-item"><span>Item 5</span><button class="btn" onclick="buy(50)">Buy $50</button></div>
+        <div class="market-item"><span>Item 6</span><button class="btn" onclick="buy(60)">Buy $60</button></div>
+        <div class="market-item"><span>Item 7</span><button class="btn" onclick="buy(70)">Buy $70</button></div>
+        <div class="market-item"><span>Item 8</span><button class="btn" onclick="buy(80)">Buy $80</button></div>
+        <div class="market-item"><span>Item 9</span><button class="btn" onclick="buy(90)">Buy $90</button></div>
+        <div class="market-item"><span>Item 10</span><button class="btn" onclick="buy(100)">Buy $100</button></div>
     </div>
 
     <div class="logout">
@@ -83,6 +158,42 @@
     </div>
 
 </div>
+
+<script>
+    let balance = 1000;
+
+    function updateBalance() {
+        document.getElementById("balance").innerText = "$" + balance.toFixed(2);
+    }
+
+    function addMoney() {
+        const amount = Number(document.getElementById("addAmount").value);
+        if (amount <= 0) return;
+
+        balance += amount;
+        updateBalance();
+
+        const tx = document.createElement("div");
+        tx.innerHTML = `<span>Admin Add</span><span>+ $${amount}</span>`;
+        document.getElementById("transactions").prepend(tx);
+
+        document.getElementById("addAmount").value = "";
+    }
+
+    function buy(price) {
+        if (balance < price) {
+            alert("Not enough balance");
+            return;
+        }
+
+        balance -= price;
+        updateBalance();
+
+        const tx = document.createElement("div");
+        tx.innerHTML = `<span>Market Purchase</span><span>- $${price}</span>`;
+        document.getElementById("transactions").prepend(tx);
+    }
+</script>
 
 </body>
 </html>
