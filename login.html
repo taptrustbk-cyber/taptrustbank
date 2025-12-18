@@ -2,102 +2,113 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Login | TapTrust Bank</title>
+    <title>TapTrust Login</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <style>
         body {
             margin: 0;
-            font-family: Arial, Helvetica, sans-serif;
+            font-family: Arial, sans-serif;
             height: 100vh;
+            background: linear-gradient(135deg, #041a33, #0a2d4d);
             display: flex;
-            align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, #071b2f, #0a2540);
+            align-items: center;
         }
 
         .login-box {
-            background: rgba(255, 255, 255, 0.06);
-            padding: 35px;
-            border-radius: 20px;
-            width: 340px;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 380px;
             text-align: center;
+            color: #fff;
+        }
+
+        .logo {
+            width: 80px;
+            margin-bottom: 15px;
         }
 
         h2 {
-            color: #f6c453;
-            margin-bottom: 25px;
+            color: #f9c74f;
+            margin-bottom: 20px;
         }
 
         input {
             width: 100%;
             padding: 12px;
             margin-bottom: 15px;
+            border-radius: 8px;
             border: none;
-            border-radius: 10px;
+            outline: none;
             font-size: 14px;
         }
 
-        .btn {
+        button {
             width: 100%;
             padding: 12px;
-            background: #f6c453;
+            border-radius: 25px;
             border: none;
-            border-radius: 12px;
-            font-weight: bold;
+            background: #f9c74f;
+            font-size: 16px;
             cursor: pointer;
-            margin-top: 5px;
+            font-weight: bold;
         }
 
-        .btn:hover {
-            background: #ffd87d;
+        button:hover {
+            background: #f1b90b;
         }
 
-        .signup-btn {
-            margin-top: 12px;
-            background: transparent;
-            border: 1px solid #f6c453;
-            color: #f6c453;
-        }
-
-        .signup-btn:hover {
-            background: #f6c453;
-            color: #0a2540;
-        }
-
-        .back {
+        .signup-text {
             margin-top: 15px;
-            display: block;
-            color: #ffffff;
-            text-decoration: none;
             font-size: 14px;
+        }
+
+        .signup-text a {
+            color: #f9c74f;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .back-home {
+            margin-top: 10px;
+        }
+
+        .back-home a {
+            color: #ddd;
+            text-decoration: none;
+            font-size: 13px;
         }
     </style>
 </head>
+
 <body>
 
-<div class="login-box">
-    <h2>TapTrust Login</h2>
+    <div class="login-box">
 
-    <input type="email" placeholder="Email">
-    <input type="password" placeholder="Password">
+        <!-- LOGO (FIXED) -->
+        <img src="assets/logo.png" alt="TapTrust Logo" class="logo">
 
-    <button class="btn" onclick="login()">Login</button>
+        <h2>Login</h2>
 
-    <!-- SIGN UP BUTTON -->
-    <button class="btn signup-btn" onclick="window.location.href='signup.html'">
-        Create Account
-    </button>
+        <input type="email" placeholder="Email">
+        <input type="password" placeholder="Password">
 
-    <a href="index.html" class="back">← Back to Home</a>
-</div>
+        <button>Login</button>
 
-<script>
-    function login() {
-        // TEMP login redirect (will be real with Supabase later)
-        window.location.href = "dashboard.html";
-    }
-</script>
+        <div class="signup-text">
+            Don’t have an account?
+            <a href="signup.html">Sign up</a>
+        </div>
+
+        <div class="back-home">
+            <a href="index.html">← Back to Home</a>
+        </div>
+
+    </div>
 
 </body>
 </html>
