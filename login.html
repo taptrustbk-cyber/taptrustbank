@@ -8,7 +8,7 @@
   <!-- Font -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
-  <!-- Supabase -->
+  <!-- Supabase v2 -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
@@ -92,10 +92,15 @@
       box-shadow: 0 10px 25px rgba(0,212,255,0.45);
     }
 
+    .btn-login:hover {
+      opacity: 0.95;
+    }
+
     .message {
       margin-top: 15px;
       font-size: 14px;
       text-align: center;
+      min-height: 20px;
     }
 
     .signup-link {
@@ -127,7 +132,7 @@
       <input type="password" id="password" placeholder="Password">
     </div>
 
-    <button class="btn-login" onclick="login()">Login</button>
+    <button class="btn-login" id="loginBtn">Login</button>
 
     <div class="message" id="message"></div>
 
@@ -138,19 +143,31 @@
   </div>
 
 <script>
-  const supabase = supabase.createClient(
-    "https://lghhofyhzopfnibodsjw.supabase.co",
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxnaGhvZnloem9wZm5pYm9kc2p3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU5OTAzODEsImV4cCI6MjA4MTU2NjM4MX0.oTxQ7U5HcP9OO7rAuMN7awk1EQQn_TuDrL-AZ-uK-5w"
+  /* ====== SUPABASE CONFIG ====== */
+  const SUPABASE_URL = "https://lghhofyhzopfnibodsjw.supabase.co";
+  const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxnaGhvZnloem9wZm5pYm9kc2p3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU5OTAzODEsImV4cCI6MjA4MTU2NjM4MX0.oTxQ7U5HcP9OO7rAuMN7awk1EQQn_TuDrL-AZ-uK-5w";
+
+  const client = supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY
   );
 
-  async function login() {
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
+  /* ====== LOGIN BUTTON FIX ====== */
+  document.getElementById("loginBtn").addEventListener("click", async () => {
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value.trim();
     const message = document.getElementById("message");
 
+    if (!email || !password) {
+      message.style.color = "orange";
+      message.innerText = "Please enter email and password.";
+      return;
+    }
+
+    message.style.color = "#fff";
     message.innerText = "Signing in...";
 
-    const { data, error } = await supabase.auth.signInWithPassword({
+    const { data, error } = await client.auth.signInWithPassword({
       email,
       password
     });
@@ -163,13 +180,13 @@
 
     if (!data.user.email_confirmed_at) {
       message.style.color = "orange";
-      message.innerText = "Please confirm your email before login.";
-      await supabase.auth.signOut();
+      message.innerText = "Please confirm your email first.";
+      await client.auth.signOut();
       return;
     }
 
     window.location.href = "dashboard.html";
-  }
+  });
 </script>
 
 </body>
