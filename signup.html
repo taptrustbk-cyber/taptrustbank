@@ -1,188 +1,160 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Create Account | TapTrust Bank</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <title>TapTrust Bank – Create Account</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-
-  <!-- Supabase v2 -->
+  <!-- Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
     * {
-      margin: 0;
-      padding: 0;
       box-sizing: border-box;
-      font-family: 'Poppins', sans-serif;
+      font-family: Arial, sans-serif;
     }
 
     body {
-      height: 100vh;
-      background:
-        linear-gradient(rgba(0,0,0,.65), rgba(0,0,0,.65)),
-        url("https://images.unsplash.com/photo-1601597111158-2fceff292cdc");
-      background-size: cover;
-      background-position: center;
+      margin: 0;
+      min-height: 100vh;
+      background: linear-gradient(
+        rgba(0,0,0,0.6),
+        rgba(0,0,0,0.6)
+      ),
+      url("https://images.unsplash.com/photo-1601597111158-2fceff292cdc") no-repeat center/cover;
       display: flex;
-      align-items: center;
       justify-content: center;
-      color: #fff;
+      align-items: center;
     }
 
-    .signup-card {
-      width: 92%;
+    .card {
+      background: rgba(255,255,255,0.95);
+      width: 100%;
       max-width: 420px;
-      padding: 40px 32px;
-      border-radius: 22px;
-      background: rgba(255,255,255,0.08);
-      backdrop-filter: blur(16px);
-      box-shadow: 0 20px 60px rgba(0,0,0,.6);
+      padding: 35px;
+      border-radius: 20px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+      text-align: center;
     }
 
     .logo {
-      text-align: center;
-      font-size: 36px;
-      font-weight: 700;
+      font-size: 30px;
+      font-weight: bold;
+      color: #0a3cff;
       margin-bottom: 10px;
     }
 
-    .logo span {
-      color: #00d4ff;
-    }
-
     .subtitle {
-      text-align: center;
-      font-size: 14px;
-      opacity: 0.85;
-      margin-bottom: 30px;
+      color: #555;
+      margin-bottom: 25px;
     }
 
-    .input-group {
-      margin-bottom: 18px;
-    }
-
-    .input-group input {
-      width: 100%;
-      padding: 14px 16px;
-      border-radius: 14px;
-      border: none;
-      outline: none;
-      font-size: 15px;
-      background: rgba(255,255,255,0.15);
-      color: #fff;
-    }
-
-    .input-group input::placeholder {
-      color: rgba(255,255,255,0.7);
-    }
-
-    .btn-signup {
+    input {
       width: 100%;
       padding: 14px;
-      border-radius: 30px;
-      border: none;
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
-      color: #fff;
-      background: linear-gradient(135deg,#00d4ff,#007bff);
-      box-shadow: 0 10px 25px rgba(0,212,255,0.45);
+      margin-bottom: 15px;
+      border-radius: 12px;
+      border: 1px solid #ccc;
+      font-size: 15px;
     }
 
-    .btn-signup:hover {
-      opacity: 0.95;
+    button {
+      width: 100%;
+      padding: 14px;
+      border-radius: 12px;
+      border: none;
+      font-size: 16px;
+      background: #0a3cff;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    button:hover {
+      background: #0026cc;
+    }
+
+    .link {
+      margin-top: 15px;
+      font-size: 14px;
+    }
+
+    .link a {
+      color: #0a3cff;
+      text-decoration: none;
+      font-weight: bold;
     }
 
     .message {
       margin-top: 15px;
       font-size: 14px;
-      text-align: center;
-      min-height: 20px;
+      color: green;
+      display: none;
     }
 
-    .login-link {
-      margin-top: 20px;
-      text-align: center;
-      font-size: 14px;
-      opacity: 0.9;
-    }
-
-    .login-link a {
-      color: #00d4ff;
-      text-decoration: none;
-      font-weight: 600;
+    .error {
+      color: red;
     }
   </style>
 </head>
-
 <body>
 
-  <div class="signup-card">
-    <div class="logo">Tap<span>Trust</span></div>
+  <div class="card">
+    <div class="logo">TapTrust Bank</div>
     <div class="subtitle">Create your secure banking account</div>
 
-    <div class="input-group">
-      <input type="email" id="email" placeholder="Email address">
-    </div>
+    <input id="email" type="email" placeholder="Email address" />
+    <input id="password" type="password" placeholder="Password (min 6 chars)" />
 
-    <div class="input-group">
-      <input type="password" id="password" placeholder="Password">
-    </div>
+    <button onclick="signup()">Create Account</button>
 
-    <button class="btn-signup" id="signupBtn">Create Account</button>
+    <div class="message" id="msg"></div>
 
-    <div class="message" id="message"></div>
-
-    <div class="login-link">
+    <div class="link">
       Already have an account?
       <a href="login.html">Login</a>
     </div>
   </div>
 
 <script>
-  /* ====== SUPABASE CONFIG ====== */
-  const SUPABASE_URL = "https://lghhofyhzopfnibodsjw.supabase.co";
-  const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxnaGhvZnloem9wZm5pYm9kc2p3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU5OTAzODEsImV4cCI6MjA4MTU2NjM4MX0.oTxQ7U5HcP9OO7rAuMN7awk1EQQn_TuDrL-AZ-uK-5w";
-
-  const client = supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_ANON_KEY
+  const supabase = supabase.createClient(
+    "https://lghhofyhzopfnibodsjw.supabase.co",
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxnaGhvZnloem9wZm5pYm9kc2p3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU5OTAzODEsImV4cCI6MjA4MTU2NjM4MX0.oTxQ7U5HcP9OO7rAuMN7awk1EQQn_TuDrL-AZ-uK-5w"
   );
 
-  /* ====== SIGNUP BUTTON FIX ====== */
-  document.getElementById("signupBtn").addEventListener("click", async () => {
+  async function signup() {
     const email = document.getElementById("email").value.trim();
     const password = document.getElementById("password").value.trim();
-    const message = document.getElementById("message");
+    const msg = document.getElementById("msg");
+
+    msg.style.display = "none";
+    msg.classList.remove("error");
 
     if (!email || !password) {
-      message.style.color = "orange";
-      message.innerText = "Please enter email and password.";
+      msg.textContent = "Please fill all fields";
+      msg.classList.add("error");
+      msg.style.display = "block";
       return;
     }
 
-    message.style.color = "#fff";
-    message.innerText = "Creating account...";
-
-    const { error } = await client.auth.signUp({
+    const { error } = await supabase.auth.signUp({
       email,
       password,
       options: {
-        emailRedirectTo: window.location.origin + "/login.html"
+        emailRedirectTo: "https://taptrustbk-cyber.github.io/login.html"
       }
     });
 
     if (error) {
-      message.style.color = "red";
-      message.innerText = error.message;
+      msg.textContent = error.message;
+      msg.classList.add("error");
+      msg.style.display = "block";
     } else {
-      message.style.color = "#00ff99";
-      message.innerText = "Account created. Check your email to confirm.";
+      msg.textContent =
+        "Account created! Please check your email to confirm.";
+      msg.style.display = "block";
     }
-  });
+  }
 </script>
 
 </body>
