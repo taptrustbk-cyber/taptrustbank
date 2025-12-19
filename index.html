@@ -1,86 +1,125 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>TapTrust Bank</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <title>TapTrust Bank</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            height: 100vh;
-            background: linear-gradient(135deg, #f4f6fb, #e6ecf5);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
-        .home-container {
-            text-align: center;
-            max-width: 600px;
-            padding: 40px;
-        }
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
 
-        .logo {
-            width: 100px;
-            margin-bottom: 20px;
-        }
+    body {
+      height: 100vh;
+      background:
+        linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)),
+        url("https://images.unsplash.com/photo-1601597111158-2fceff292cdc");
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+    }
 
-        h1 {
-            font-size: 40px;
-            color: #0a2d4d;
-            margin-bottom: 10px;
-        }
+    /* Main Card */
+    .landing-card {
+      width: 92%;
+      max-width: 450px;
+      padding: 45px 35px;
+      border-radius: 22px;
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+      text-align: center;
+    }
 
-        h2 {
-            font-size: 28px;
-            color: #0a2d4d;
-            margin-bottom: 20px;
-        }
+    /* Logo */
+    .logo {
+      font-size: 42px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+    }
 
-        p {
-            color: #555;
-            font-size: 16px;
-            margin-bottom: 30px;
-        }
+    .logo span {
+      color: #00d4ff;
+    }
 
-        .btn {
-            padding: 14px 40px;
-            border-radius: 30px;
-            background: #f9c74f;
-            color: #000;
-            font-size: 18px;
-            font-weight: bold;
-            border: none;
-            cursor: pointer;
-            text-decoration: none;
-        }
+    .bank-line {
+      font-size: 14px;
+      opacity: 0.85;
+      margin-bottom: 25px;
+    }
 
-        .btn:hover {
-            background: #f1b90b;
-        }
-    </style>
+    .welcome-text {
+      font-size: 16px;
+      line-height: 1.6;
+      opacity: 0.9;
+      margin-bottom: 35px;
+    }
+
+    /* Button */
+    .btn-start {
+      display: inline-block;
+      padding: 14px 34px;
+      border-radius: 40px;
+      font-size: 16px;
+      font-weight: 600;
+      text-decoration: none;
+      color: #fff;
+      background: linear-gradient(135deg, #00d4ff, #007bff);
+      box-shadow: 0 10px 25px rgba(0,212,255,0.4);
+      transition: all 0.3s ease;
+    }
+
+    .btn-start:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 15px 35px rgba(0,212,255,0.6);
+    }
+
+    /* Footer */
+    .footer {
+      margin-top: 30px;
+      font-size: 12px;
+      opacity: 0.6;
+    }
+
+    @media (max-width: 480px) {
+      .logo {
+        font-size: 36px;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-    <div class="home-container">
+  <div class="landing-card">
+    <div class="logo">Tap<span>Trust</span></div>
+    <div class="bank-line">Digital Banking Platform</div>
 
-        <!-- LOGO -->
-        <img src="assets/logo.png" alt="TapTrust Logo" class="logo">
-
-        <h1>TapTrust</h1>
-        <h2>Bank on Trust.</h2>
-
-        <p>
-            Secure, modern digital banking you can rely on anytime, anywhere.
-        </p>
-
-        <!-- GET STARTED BUTTON -->
-        <a href="login.html" class="btn">Get Started</a>
-
+    <div class="welcome-text">
+      Secure, modern, and trusted banking experience.<br>
+      If you want to continue with our bank,<br>
+      click <strong>Get Started</strong>.
     </div>
+
+    <!-- Change signup.html later -->
+    <a href="signup.html" class="btn-start">Get Started</a>
+
+    <div class="footer">
+      © 2025 TapTrust Bank. All rights reserved.
+    </div>
+  </div>
 
 </body>
 </html>
