@@ -1,139 +1,175 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>TapTrust – Secure Login</title>
-<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+  <meta charset="UTF-8">
+  <title>Login | TapTrust Bank</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<style>
-body {
-  margin: 0;
-  height: 100vh;
-  background: linear-gradient(135deg, #020617, #0f172a);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-family: "Segoe UI", Arial, sans-serif;
-}
+  <!-- Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
-.card {
-  background: #ffffff;
-  width: 380px;
-  padding: 32px;
-  border-radius: 14px;
-  box-shadow: 0 20px 50px rgba(0,0,0,.35);
-}
+  <!-- Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-.logo {
-  text-align: center;
-  margin-bottom: 20px;
-}
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
 
-.logo img {
-  width: 64px;
-}
+    body {
+      height: 100vh;
+      background:
+        linear-gradient(rgba(0,0,0,.65), rgba(0,0,0,.65)),
+        url("https://images.unsplash.com/photo-1601597111158-2fceff292cdc");
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+    }
 
-.logo h1 {
-  margin: 10px 0 0;
-  font-size: 22px;
-  font-weight: 600;
-  color: #020617;
-}
+    .login-card {
+      width: 92%;
+      max-width: 420px;
+      padding: 40px 32px;
+      border-radius: 22px;
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(16px);
+      box-shadow: 0 20px 60px rgba(0,0,0,.6);
+    }
 
-input {
-  width: 100%;
-  padding: 13px;
-  margin-top: 12px;
-  border-radius: 8px;
-  border: 1px solid #d1d5db;
-  font-size: 15px;
-}
+    .logo {
+      text-align: center;
+      font-size: 36px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
 
-button {
-  width: 100%;
-  margin-top: 18px;
-  padding: 13px;
-  background: #2563eb;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  font-size: 16px;
-  cursor: pointer;
-}
+    .logo span {
+      color: #00d4ff;
+    }
 
-button:hover {
-  background: #1e40af;
-}
+    .subtitle {
+      text-align: center;
+      font-size: 14px;
+      opacity: 0.85;
+      margin-bottom: 30px;
+    }
 
-.links {
-  margin-top: 14px;
-  text-align: center;
-  font-size: 14px;
-}
+    .input-group {
+      margin-bottom: 18px;
+    }
 
-.links a {
-  color: #2563eb;
-  text-decoration: none;
-}
+    .input-group input {
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: 14px;
+      border: none;
+      outline: none;
+      font-size: 15px;
+      background: rgba(255,255,255,0.15);
+      color: #fff;
+    }
 
-.msg {
-  margin-top: 12px;
-  text-align: center;
-  font-size: 14px;
-  color: #dc2626;
-}
-</style>
+    .input-group input::placeholder {
+      color: rgba(255,255,255,0.7);
+    }
+
+    .btn-login {
+      width: 100%;
+      padding: 14px;
+      border-radius: 30px;
+      border: none;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      color: #fff;
+      background: linear-gradient(135deg,#00d4ff,#007bff);
+      box-shadow: 0 10px 25px rgba(0,212,255,0.45);
+    }
+
+    .message {
+      margin-top: 15px;
+      font-size: 14px;
+      text-align: center;
+    }
+
+    .signup-link {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 14px;
+      opacity: 0.9;
+    }
+
+    .signup-link a {
+      color: #00d4ff;
+      text-decoration: none;
+      font-weight: 600;
+    }
+  </style>
 </head>
 
 <body>
 
-<div class="card">
-  <div class="logo">
-    <img src="Logo.png" alt="TapTrust Logo">
-    <h1>TapTrust Bank</h1>
+  <div class="login-card">
+    <div class="logo">Tap<span>Trust</span></div>
+    <div class="subtitle">Secure Login</div>
+
+    <div class="input-group">
+      <input type="email" id="email" placeholder="Email address">
+    </div>
+
+    <div class="input-group">
+      <input type="password" id="password" placeholder="Password">
+    </div>
+
+    <button class="btn-login" onclick="login()">Login</button>
+
+    <div class="message" id="message"></div>
+
+    <div class="signup-link">
+      Don’t have an account?
+      <a href="signup.html">Create Account</a>
+    </div>
   </div>
-
-  <input id="email" type="email" placeholder="Email address">
-  <input id="password" type="password" placeholder="Password">
-
-  <button onclick="login()">Secure Login</button>
-
-  <div class="msg" id="msg"></div>
-
-  <div class="links">
-    Don’t have an account?
-    <a href="signup.html">Create one</a>
-  </div>
-</div>
 
 <script>
-const SUPABASE_URL = "https://lghhofyhzopfnibodsjw.supabase.co";
-const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxnaGhvZnloem9wZm5pYm9kc2p3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU5OTAzODEsImV4cCI6MjA4MTU2NjM4MX0.oTxQ7U5HcP9OO7rAuMN7awk1EQQn_TuDrL-AZ-uK-5w";
+  const supabase = supabase.createClient(
+    "YOUR_SUPABASE_URL",https://lghhofyhzopfnibodsjw.supabase.co
+    "YOUR_ANON_KEY"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxnaGhvZnloem9wZm5pYm9kc2p3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU5OTAzODEsImV4cCI6MjA4MTU2NjM4MX0.oTxQ7U5HcP9OO7rAuMN7awk1EQQn_TuDrL-AZ-uK-5w
+  );
 
-const supabaseClient = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_ANON_KEY
-);
+  async function login() {
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+    const message = document.getElementById("message");
 
-async function login() {
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
-  const msg = document.getElementById("msg");
+    message.innerText = "Signing in...";
 
-  msg.innerText = "Signing in...";
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password
+    });
 
-  const { error } = await supabaseClient.auth.signInWithPassword({
-    email,
-    password
-  });
+    if (error) {
+      message.style.color = "red";
+      message.innerText = error.message;
+      return;
+    }
 
-  if (error) {
-    msg.innerText = "Incorrect email or password";
-    return;
+    if (!data.user.email_confirmed_at) {
+      message.style.color = "orange";
+      message.innerText = "Please confirm your email before login.";
+      await supabase.auth.signOut();
+      return;
+    }
+
+    window.location.href = "dashboard.html";
   }
-
-  window.location.href = "dashboard.html";
-}
 </script>
 
 </body>
