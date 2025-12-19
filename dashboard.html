@@ -1,124 +1,213 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>TapTrust Wallet</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <title>Dashboard | TapTrust Bank</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<style>
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #f1f5f9;
-}
+  <!-- Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
-.sidebar {
-  width: 230px;
-  height: 100vh;
-  background: #0f172a;
-  color: white;
-  position: fixed;
-}
+  <!-- Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-.sidebar h2 {
-  text-align: center;
-  padding: 20px;
-  border-bottom: 1px solid #1e293b;
-}
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
 
-.sidebar a {
-  display: block;
-  padding: 15px 20px;
-  color: #cbd5f5;
-  text-decoration: none;
-}
+    body {
+      height: 100vh;
+      background:
+        linear-gradient(rgba(0,0,0,.7), rgba(0,0,0,.7)),
+        url("https://images.unsplash.com/photo-1601597111158-2fceff292cdc");
+      background-size: cover;
+      background-position: center;
+      color: #fff;
+      display: flex;
+    }
 
-.sidebar a:hover {
-  background: #1e293b;
-  color: white;
-}
+    /* Sidebar */
+    .sidebar {
+      width: 240px;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(18px);
+      padding: 30px 20px;
+      display: flex;
+      flex-direction: column;
+    }
 
-.main {
-  margin-left: 230px;
-  padding: 25px;
-}
+    .sidebar .logo {
+      font-size: 26px;
+      font-weight: 700;
+      margin-bottom: 40px;
+      text-align: center;
+    }
 
-.card {
-  background: white;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0,0,0,.05);
-  max-width: 500px;
-}
+    .sidebar .logo span {
+      color: #00d4ff;
+    }
 
-.balance {
-  font-size: 32px;
-  color: #2563eb;
-  margin-top: 10px;
-}
+    .menu a {
+      display: block;
+      padding: 12px 16px;
+      border-radius: 14px;
+      color: #fff;
+      text-decoration: none;
+      margin-bottom: 12px;
+      font-size: 15px;
+      opacity: 0.9;
+    }
 
-button {
-  width: 100%;
-  margin-top: 15px;
-  padding: 12px;
-  border: none;
-  border-radius: 8px;
-  background: #2563eb;
-  color: white;
-  font-size: 16px;
-  cursor: pointer;
-}
-</style>
+    .menu a:hover {
+      background: rgba(255,255,255,0.12);
+    }
+
+    /* Main */
+    .main {
+      flex: 1;
+      padding: 30px;
+      overflow-y: auto;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+
+    .welcome {
+      font-size: 18px;
+      font-weight: 500;
+    }
+
+    .profile-btn {
+      background: rgba(255,255,255,0.15);
+      padding: 10px 18px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    /* Cards */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(14px);
+      border-radius: 20px;
+      padding: 25px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.4);
+    }
+
+    .card h3 {
+      font-size: 16px;
+      margin-bottom: 12px;
+      opacity: 0.85;
+    }
+
+    .balance {
+      font-size: 34px;
+      font-weight: 700;
+      color: #00ffcc;
+    }
+
+    .coming {
+      font-size: 14px;
+      opacity: 0.7;
+    }
+
+    @media(max-width: 768px) {
+      .sidebar {
+        display: none;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-<div class="sidebar">
-  <h2>🏦 TapTrust</h2>
-  <a href="dashboard.html">Wallet</a>
-  <a href="market.html">Market</a>
-  <a href="send.html">Send Money</a>
-  <a href="transactions.html">Transactions</a>
-  <a href="profile.html">Profile</a>
-  <a href="login.html">Logout</a>
-</div>
-
-<div class="main">
-  <h1>Wallet Overview</h1>
-
-  <div class="card">
-    <p>Email</p>
-    <strong id="email">Loading...</strong>
-
-    <p style="margin-top:15px;">Balance</p>
-    <div class="balance">$<span id="balance">0</span></div>
-
-    <button onclick="location.href='send.html'">Send Money</button>
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="logo">Tap<span>Trust</span></div>
+    <div class="menu">
+      <a href="#">🏠 Home</a>
+      <a href="#">🛒 Market</a>
+      <a href="#">📈 Trading</a>
+      <a href="#">💼 Wallet</a>
+      <a href="#">⚙️ Settings</a>
+      <a href="#">📩 Support</a>
+    </div>
   </div>
-</div>
 
-<script type="module">
-import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+  <!-- Main -->
+  <div class="main">
+    <div class="topbar">
+      <div class="welcome" id="welcome">Welcome</div>
+      <div class="profile-btn" onclick="logout()">Logout</div>
+    </div>
 
-const supabase = createClient(
-  "YOUR_SUPABASE_URL",
-  "YOUR_ANON_KEY"
-);
+    <div class="cards">
+      <div class="card">
+        <h3>Wallet Balance</h3>
+        <div class="balance">$<span id="balance">0</span></div>
+      </div>
 
-// 🔒 AUTH GUARD
-const { data: { session } } = await supabase.auth.getSession();
-if (!session) location.href = "login.html";
+      <div class="card">
+        <h3>Market</h3>
+        <div class="coming">Visa services & products coming soon</div>
+      </div>
 
-// USER DATA
-const { data: { user } } = await supabase.auth.getUser();
-const { data: profile } = await supabase
-  .from("profiles")
-  .select("email, balance")
-  .eq("id", user.id)
-  .single();
+      <div class="card">
+        <h3>Trading</h3>
+        <div class="coming">Coming Soon</div>
+      </div>
+    </div>
+  </div>
 
-document.getElementById("email").innerText = profile.email;
-document.getElementById("balance").innerText = profile.balance;
+<script>
+  const supabase = supabase.createClient(
+    "https://lghhofyhzopfnibodsjw.supabase.co",
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxnaGhvZnloem9wZm5pYm9kc2p3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU5OTAzODEsImV4cCI6MjA4MTU2NjM4MX0.oTxQ7U5HcP9OO7rAuMN7awk1EQQn_TuDrL-AZ-uK-5w"
+  );
+
+  async function checkSession() {
+    const { data } = await supabase.auth.getUser();
+    if (!data.user) {
+      window.location.href = "login.html";
+    } else {
+      document.getElementById("welcome").innerText =
+        "Welcome, " + data.user.email;
+      loadProfile(data.user.id);
+    }
+  }
+
+  async function loadProfile(userId) {
+    const { data } = await supabase
+      .from("profiles")
+      .select("balance")
+      .eq("id", userId)
+      .single();
+
+    if (data) {
+      document.getElementById("balance").innerText = data.balance;
+    }
+  }
+
+  async function logout() {
+    await supabase.auth.signOut();
+    window.location.href = "login.html";
+  }
+
+  checkSession();
 </script>
 
 </body>
