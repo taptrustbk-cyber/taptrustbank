@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Market | TapTrust Bank</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    body {
+      margin:0;
+      font-family:Arial;
+      background:#0b0b0b;
+      color:white;
+    }
+    .grid {
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+      gap:20px;
+      padding:20px;
+    }
+    .card {
+      background:#141414;
+      border-radius:16px;
+      padding:15px;
+      text-align:center;
+    }
+    .card img {
+      width:100%;
+      border-radius:12px;
+    }
+    button {
+      margin-top:10px;
+      padding:10px 20px;
+      border:none;
+      border-radius:20px;
+      background:#007bff;
+      color:white;
+      cursor:pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+<h2 style="text-align:center;padding:15px">Visa Applications</h2>
+
+<div class="grid">
+  <div class="card">
+    <img src="https://source.unsplash.com/400x250/?italy">
+    <h3>Italy Visa</h3>
+    <p>$12,000</p>
+    <button onclick="buy('Italy',12000)">Buy</button>
+  </div>
+
+  <div class="card">
+    <img src="https://source.unsplash.com/400x250/?france">
+    <h3>France Visa</h3>
+    <p>$12,000</p>
+    <button onclick="buy('France',12000)">Buy</button>
+  </div>
+
+  <div class="card">
+    <img src="https://source.unsplash.com/400x250/?germany">
+    <h3>Germany Visa</h3>
+    <p>$12,000</p>
+    <button onclick="buy('Germany',12000)">Buy</button>
+  </div>
+
+  <div class="card">
+    <img src="https://source.unsplash.com/400x250/?uk,london">
+    <h3>United Kingdom Visa</h3>
+    <p>$18,000</p>
+    <button onclick="buy('United Kingdom',18000)">Buy</button>
+  </div>
+
+  <div class="card">
+    <img src="https://source.unsplash.com/400x250/?usa">
+    <h3>USA Visa</h3>
+    <p>$16,000</p>
+    <button onclick="buy('USA',16000)">Buy</button>
+  </div>
+
+  <div class="card">
+    <img src="https://source.unsplash.com/400x250/?canada">
+    <h3>Canada Visa</h3>
+    <p>$12,000</p>
+    <button onclick="buy('Canada',12000)">Buy</button>
+  </div>
+
+  <div class="card">
+    <img src="https://source.unsplash.com/400x250/?romania">
+    <h3>Romania Visa</h3>
+    <p>$8,000</p>
+    <button onclick="buy('Romania',8000)">Buy</button>
+  </div>
+
+  <div class="card">
+    <img src="https://source.unsplash.com/400x250/?serbia">
+    <h3>Serbia Visa</h3>
+    <p>$8,000</p>
+    <button onclick="buy('Serbia',8000)">Buy</button>
+  </div>
+
+  <div class="card">
+    <img src="https://source.unsplash.com/400x250/?hungary">
+    <h3>Hungary Visa</h3>
+    <p>$12,000</p>
+    <button onclick="buy('Hungary',12000)">Buy</button>
+  </div>
+
+  <div class="card">
+    <img src="https://source.unsplash.com/400x250/?finland">
+    <h3>Finland Visa</h3>
+    <p>$12,000</p>
+    <button onclick="buy('Finland',12000)">Buy</button>
+  </div>
+</div>
+
+<script>
+function buy(country, price) {
+  localStorage.setItem("visa_country", country);
+  localStorage.setItem("visa_price", price);
+  location.href = "visa-buy.html";
+}
+</script>
+
+</body>
+</html>
