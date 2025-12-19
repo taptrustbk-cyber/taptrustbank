@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Send Money | TapTrust</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    body {
+      background:#0b0b0b;
+      color:white;
+      font-family:Arial;
+      padding:40px;
+    }
+    .box {
+      max-width:400px;
+      margin:auto;
+      background:#141414;
+      padding:25px;
+      border-radius:20px;
+    }
+    input, button {
+      width:100%;
+      padding:12px;
+      margin-top:12px;
+      border-radius:12px;
+      border:none;
+    }
+    input {
+      background:#222;
+      color:white;
+    }
+    button {
+      background:#00aaff;
+      color:white;
+      font-weight:bold;
+      cursor:pointer;
+    }
+    .msg {
+      margin-top:15px;
+      text-align:center;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="box">
+  <h2>Send Money</h2>
+
+  <input id="email" placeholder="Receiver Email">
+  <input id="amount" type="number" placeholder="Amount ($)">
+
+  <button onclick="send()">Send</button>
+
+  <div class="msg" id="msg"></div>
+</div>
+
+<script>
+const client = supabase.createClient(
+  "https://lghhofyhzopfnibodsjw.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxnaGhvZnloem9wZm5pYm9kc2p3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU5OTAzODEsImV4cCI6MjA4MTU2NjM4MX0.oTxQ7U5HcP9OO7rAuMN7awk1EQQn_TuDrL-AZ-uK-5w"
+);
+
+async function send() {
+  const email = document.getElementById("email").value;
+  const amount = document.getElementById("amount").value;
+  const msg = document.getElementById("msg");
+
+  msg.innerText = "Processing...";
+
+  const { error } = await client.rpc("send_money", {
+    receiver_email: email,
+    send_amount: amount
+  });
+
+  if (error) {
+    msg.style.color = "red";
+    msg.innerText = error.message;
+  } else {
+    msg.style.color = "#00ff99";
+    msg.innerText = "Money sent successfully";
+  }
+}
+</script>
+
+</body>
+</html>
