@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Visa Application</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body style="background:#000;color:#fff;padding:20px">
+
+<h2>Visa Application</h2>
+
+<input id="fname" placeholder="First Name"><br><br>
+<input id="lname" placeholder="Last Name"><br><br>
+<input id="passport" placeholder="Passport Number"><br><br>
+<input id="birth" type="date"><br><br>
+<input id="phone" placeholder="Phone"><br><br>
+<input id="email" placeholder="Email"><br><br>
+
+<button onclick="submitVisa()">Submit Application</button>
+
+<p id="msg"></p>
+
+<script>
+const client = supabase.createClient(
+  "https://lghhofyhzopfnibodsjw.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxnaGhvZnloem9wZm5pYm9kc2p3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU5OTAzODEsImV4cCI6MjA4MTU2NjM4MX0.oTxQ7U5HcP9OO7rAuMN7awk1EQQn_TuDrL-AZ-uK-5w"
+);
+
+async function submitVisa() {
+  const { data } = await client.auth.getUser();
+  if (!data.user) return location.href = "login.html";
+
+  const country = localStorage.getItem("visa_country");
+  const price = localStorage.getItem("visa_price");
+
+  const res = await client.from("visa_applications").insert({
+    user_id: data.user.id,
+    country,
+    price,
+    first_name: fname.value,
+    last_name: lname.value,
+    passport_number: passport.value,
+    birth_date: birth.value,
+    phone: phone.value,
+    email: email.value
+  });
+
+  msg.innerText = res.error ? res.error.message : "Application submitted successfully";
+}
+</script>
+
+</body>
+</html>
