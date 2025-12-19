@@ -8,7 +8,7 @@
   <!-- Font -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
-  <!-- Supabase -->
+  <!-- Supabase v2 -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
@@ -100,6 +100,7 @@
       margin-top: 15px;
       font-size: 14px;
       text-align: center;
+      min-height: 20px;
     }
 
     .login-link {
@@ -124,14 +125,14 @@
     <div class="subtitle">Create your secure banking account</div>
 
     <div class="input-group">
-      <input type="email" id="email" placeholder="Email address" required>
+      <input type="email" id="email" placeholder="Email address">
     </div>
 
     <div class="input-group">
-      <input type="password" id="password" placeholder="Password" required>
+      <input type="password" id="password" placeholder="Password">
     </div>
 
-    <button class="btn-signup" onclick="signup()">Create Account</button>
+    <button class="btn-signup" id="signupBtn">Create Account</button>
 
     <div class="message" id="message"></div>
 
@@ -142,19 +143,31 @@
   </div>
 
 <script>
-  const supabase = supabase.createClient(
-    "https://lghhofyhzopfnibodsjw.supabase.co",
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxnaGhvZnloem9wZm5pYm9kc2p3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU5OTAzODEsImV4cCI6MjA4MTU2NjM4MX0.oTxQ7U5HcP9OO7rAuMN7awk1EQQn_TuDrL-AZ-uK-5w"
+  /* ====== SUPABASE CONFIG ====== */
+  const SUPABASE_URL = "https://lghhofyhzopfnibodsjw.supabase.co";
+  const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxnaGhvZnloem9wZm5pYm9kc2p3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU5OTAzODEsImV4cCI6MjA4MTU2NjM4MX0.oTxQ7U5HcP9OO7rAuMN7awk1EQQn_TuDrL-AZ-uK-5w";
+
+  const client = supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY
   );
 
-  async function signup() {
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
+  /* ====== SIGNUP BUTTON FIX ====== */
+  document.getElementById("signupBtn").addEventListener("click", async () => {
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value.trim();
     const message = document.getElementById("message");
 
+    if (!email || !password) {
+      message.style.color = "orange";
+      message.innerText = "Please enter email and password.";
+      return;
+    }
+
+    message.style.color = "#fff";
     message.innerText = "Creating account...";
 
-    const { error } = await supabase.auth.signUp({
+    const { error } = await client.auth.signUp({
       email,
       password,
       options: {
@@ -167,9 +180,9 @@
       message.innerText = error.message;
     } else {
       message.style.color = "#00ff99";
-      message.innerText = "Success! Check your email to confirm your account.";
+      message.innerText = "Account created. Check your email to confirm.";
     }
-  }
+  });
 </script>
 
 </body>
