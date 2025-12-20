@@ -1,314 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>TapTrust Bank – Create Account</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- Supabase v2 -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <style>
-    * { box-sizing: border-box; font-family: Arial, sans-serif; }
-
     body {
       margin: 0;
-      min-height: 100vh;
-      background:
-        linear-gradient(rgba(0,0,0,.6), rgba(0,0,0,.6)),
-        url("https://images.unsplash.com/photo-1601597111158-2fceff292cdc")
-        no-repeat center / cover;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #0a1f44, #0e3c68);
+      height: 100vh;
       display: flex;
-      align-items: center;
       justify-content: center;
+      align-items: center;
+      color: #fff;
     }
 
-    .card {
-      background: rgba(255,255,255,.96);
-      width: 100%;
-      max-width: 420px;
-      padding: 35px;
-      border-radius: 20px;
-      box-shadow: 0 20px 50px rgba(0,0,0,.3);
+    .signup-box {
+      background: #0f2b4f;
+      padding: 30px;
+      width: 350px;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    }
+
+    .signup-box h1 {
       text-align: center;
+      margin-bottom: 5px;
     }
 
-    .logo {
-      font-size: 30px;
-      font-weight: bold;
-      color: #0a3cff;
-      margin-bottom: 8px;
+    .signup-box p {
+      text-align: center;
+      font-size: 14px;
+      opacity: 0.8;
+      margin-bottom: 20px;
     }
 
-    .subtitle {
-      color: #555;
-      margin-bottom: 25px;
-    }
-
-    input {
+    .signup-box input {
       width: 100%;
-      padding: 14px;
-      margin-bottom: 15px;
-      border-radius: 12px;
-      border: 1px solid #ccc;
-      font-size: 15px;
-    }
-
-    button {
-      width: 100%;
-      padding: 14px;
-      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 12px;
+      border-radius: 6px;
       border: none;
+      outline: none;
+      font-size: 14px;
+    }
+
+    .signup-box button {
+      width: 100%;
+      padding: 12px;
+      background: #00c2ff;
+      color: #002;
+      border: none;
+      border-radius: 6px;
       font-size: 16px;
-      background: #0a3cff;
-      color: white;
+      font-weight: bold;
       cursor: pointer;
-      font-weight: bold;
     }
 
-    button:hover { background: #0026cc; }
+    .signup-box button:hover {
+      background: #00a6db;
+    }
 
-    .msg {
+    .footer-text {
+      text-align: center;
+      font-size: 12px;
       margin-top: 15px;
-      font-size: 14px;
-      display: none;
-    }
-
-    .error { color: red; }
-    .ok { color: green; }
-
-    .link {
-      margin-top: 15px;
-      font-size: 14px;
-    }
-
-    .link a {
-      color: #0a3cff;
-      text-decoration: none;
-      font-weight: bold;
+      opacity: 0.7;
     }
   </style>
 </head>
+
 <body>
 
-  <div class="card">
-    <div class="logo">TapTrust Bank</div>
-    <div class="subtitle">Create your secure banking account</div>
+  <div class="signup-box">
+    <h1>TapTrust Bank</h1>
+    <p>Create your secure account</p>
 
-    <input id="email" type="email" placeholder="Email address">
-    <input id="password" type="password" placeholder="Password (min 6 chars)">
+    <form id="signup-form">
+      <input type="text" id="fullName" placeholder="Full Name" required />
+      <input type="email" id="email" placeholder="Email Address" required />
+      <input type="password" id="password" placeholder="Password" required />
 
-    <button id="signupBtn">Create Account</button>
+      <button type="submit">Create Account</button>
+    </form>
 
-    <div id="msg" class="msg"></div>
-
-    <div class="link">
-      Already have an account?
-      <a href="login.html">Login</a>
+    <div class="footer-text">
+      Secure Banking • Encrypted • Trusted
     </div>
   </div>
 
-<script>
-  const supabaseClient = supabase.createClient(
-    "https://lghhofyhzopfnibodsjw.supabase.co",
-    "<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>TapTrust Bank – Create Account</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- Supabase v2 -->
+  <!-- ✅ FIX #1: SUPABASE LIBRARY (MUST BE FIRST) -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  <style>
-    * { box-sizing: border-box; font-family: Arial, sans-serif; }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      background:
-        linear-gradient(rgba(0,0,0,.6), rgba(0,0,0,.6)),
-        url("https://images.unsplash.com/photo-1601597111158-2fceff292cdc")
-        no-repeat center / cover;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .card {
-      background: rgba(255,255,255,.96);
-      width: 100%;
-      max-width: 420px;
-      padding: 35px;
-      border-radius: 20px;
-      box-shadow: 0 20px 50px rgba(0,0,0,.3);
-      text-align: center;
-    }
-
-    .logo {
-      font-size: 30px;
-      font-weight: bold;
-      color: #0a3cff;
-      margin-bottom: 8px;
-    }
-
-    .subtitle {
-      color: #555;
-      margin-bottom: 25px;
-    }
-
-    input {
-      width: 100%;
-      padding: 14px;
-      margin-bottom: 15px;
-      border-radius: 12px;
-      border: 1px solid #ccc;
-      font-size: 15px;
-    }
-
-    button {
-      width: 100%;
-      padding: 14px;
-      border-radius: 12px;
-      border: none;
-      font-size: 16px;
-      background: #0a3cff;
-      color: white;
-      cursor: pointer;
-      font-weight: bold;
-    }
-
-    button:hover { background: #0026cc; }
-
-    .msg {
-      margin-top: 15px;
-      font-size: 14px;
-      display: none;
-    }
-
-    .error { color: red; }
-    .ok { color: green; }
-
-    .link {
-      margin-top: 15px;
-      font-size: 14px;
-    }
-
-    .link a {
-      color: #0a3cff;
-      text-decoration: none;
-      font-weight: bold;
-    }
-  </style>
-</head>
-<body>
-
-  <div class="card">
-    <div class="logo">TapTrust Bank</div>
-    <div class="subtitle">Create your secure banking account</div>
-
-    <input id="email" type="email" placeholder="Email address">
-    <input id="password" type="password" placeholder="Password (min 6 chars)">
-
-    <button id="signupBtn">Create Account</button>
-
-    <div id="msg" class="msg"></div>
-
-    <div class="link">
-      Already have an account?
-      <a href="login.html">Login</a>
-    </div>
-  </div>
-
-<script>
-  const supabaseClient = supabase.createClient(
-    "https://lghhofyhzopfnibodsjw.supabase.co",
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxnaGhvZnloem9wZm5pYm9kc2p3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU5OTAzODEsImV4cCI6MjA4MTU2NjM4MX0.oTxQ7U5HcP9OO7rAuMN7awk1EQQn_TuDrL-AZ-uK-5w"
-  );
-
-  document.getElementById("signupBtn").addEventListener("click", signup);
-
-  async function signup() {
-    const email = document.getElementById("email").value.trim();
-    const password = document.getElementById("password").value.trim();
-    const msg = document.getElementById("msg");
-
-    msg.style.display = "none";
-    msg.className = "msg";
-
-    if (!email || !password) {
-      msg.textContent = "Please fill all fields.";
-      msg.classList.add("error");
-      msg.style.display = "block";
-      return;
-    }
-
-    const { error } = await supabaseClient.auth.signUp({
-      email,
-      password,
-      options: {
-        emailRedirectTo:
-          "https://taptrustbk-cyber.github.io/taptrustbank/login.html"
-      }
-    });
-
-    if (error) {
-      msg.textContent = error.message;
-      msg.classList.add("error");
-    } else {
-      msg.textContent =
-        "Account created. Please check your email to confirm.";
-      msg.classList.add("ok");
-    }
-
-    msg.style.display = "block";
-  }
-</script>
-
-</body>
-</html>
-"
-  );
-
-  document.getElementById("signupBtn").addEventListener("click", signup);
-
-  async function signup() {
-    const email = document.getElementById("email").value.trim();
-    const password = document.getElementById("password").value.trim();
-    const msg = document.getElementById("msg");
-
-    msg.style.display = "none";
-    msg.className = "msg";
-
-    if (!email || !password) {
-      msg.textContent = "Please fill all fields.";
-      msg.classList.add("error");
-      msg.style.display = "block";
-      return;
-    }
-
-    const { error } = await supabaseClient.auth.signUp({
-      email,
-      password,
-      options: {
-        emailRedirectTo:
-          "https://taptrustbk-cyber.github.io/taptrustbank/login.html"
-      }
-    });
-
-    if (error) {
-      msg.textContent = error.message;
-      msg.classList.add("error");
-    } else {
-      msg.textContent =
-        "Account created. Please check your email to confirm.";
-      msg.classList.add("ok");
-    }
-
-    msg.style.display = "block";
-  }
-</script>
+  <!-- ✅ YOUR SIGNUP LOGIC -->
+  <script src="signup.js"></script>
 
 </body>
 </html>
