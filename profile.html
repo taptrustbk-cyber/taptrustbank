@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Profile | TapTrust Bank</title>
+
+<style>
+* {
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+  margin: 0;
+  background: linear-gradient(135deg, #0f172a, #020617);
+  color: #fff;
+  min-height: 100vh;
+}
+
+/* HEADER */
+.header {
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.logo span {
+  color: #22c55e;
+}
+
+.back {
+  color: #38bdf8;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+/* CONTAINER */
+.container {
+  max-width: 500px;
+  margin: auto;
+  padding: 20px;
+}
+
+/* PROFILE CARD */
+.card {
+  background: #0b1220;
+  padding: 25px;
+  border-radius: 16px;
+  box-shadow: 0 20px 50px rgba(0,0,0,.6);
+  margin-bottom: 20px;
+}
+
+.card h2 {
+  margin-top: 0;
+}
+
+/* PROFILE IMAGE */
+.avatar {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: #020617;
+  object-fit: cover;
+  border: 2px solid #22c55e;
+  display: block;
+  margin-bottom: 10px;
+}
+
+/* INPUTS */
+input {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  border-radius: 8px;
+  border: none;
+  background: #020617;
+  color: #fff;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 12px;
+  border-radius: 8px;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.save {
+  background: #22c55e;
+  color: #020617;
+}
+
+.password {
+  background: #38bdf8;
+  color: #020617;
+}
+
+.logout {
+  background: transparent;
+  color: #ef4444;
+  border: 1px solid #ef4444;
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="logo">Tap<span>Trust</span></div>
+  <a class="back" href="dashboard.html">← Dashboard</a>
+</div>
+
+<!-- CONTENT -->
+<div class="container">
+
+  <!-- PROFILE INFO -->
+  <div class="card">
+    <h2>My Profile</h2>
+
+    <img id="avatar" class="avatar" src="" alt="Profile Photo">
+
+    <input type="file" id="photo">
+    <input type="text" id="fullname" placeholder="Full Name">
+
+    <button class="save" onclick="updateProfile()">Save Profile</button>
+  </div>
+
+  <!-- PASSWORD -->
+  <div class="card">
+    <h2>Change Password</h2>
+    <input type="password" id="newPassword" placeholder="New Password">
+    <button class="password" onclick="changePassword()">Update Password</button>
+  </div>
+
+  <!-- LOGOUT -->
+  <button class="logout" onclick="logout()">Logout</button>
+
+</div>
+
+<!-- SUPABASE -->
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<script>
+const supabase = window.supabase.createClient(
+  "https://lghhofyhzopfnibodsjw.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxnaGhvZnloem9wZm5pYm9kc2p3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU5OTAzODEsImV4cCI6MjA4MTU2NjM4MX0.oTxQ7U5HcP9OO7rAuMN7awk1EQQn_TuDrL-AZ-uK-5w"
+);
+
+async function loadProfile() {
+  const { data: userData } = await supabase.auth.getUser();
+  if (!userData.user) {
+    window.location.href = "login.html";
+    return;
+  }
+
+  const userId = userData.user.id;
+
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("*")
+    .eq("id", userId)
+    .single();
+
+  if (profile) {
+    document.getElementById("fullname").value = profile.full_name || "";
+    if (profile.avatar_url) {
+      document.getElementById("avatar").src = profile.avatar_url;
+    }
+  }
+}
+
+async function updateProfile() {
+  const name = document.getElementById("fullname").value;
+  const file = document.getElementById("photo").files[0];
+
+  const { data: userData } = await supabase.auth.getUser();
+  const userId = userData.user.id;
+
+  let avatarUrl = null;
+
+  if (file) {
+    const filePath = `avatars/${userId}.png`;
+    await supabase.storage.from("avatars").upload(filePath, file, { upsert: true });
+
+    const { data } = supabase.storage.from("avatars").getPublicUrl(filePath);
+    avatarUrl = data.publicUrl;
+  }
+
+  await supabase.from("profiles").update({
+    full_name: name,
+    avatar_url: avatarUrl
+  }).eq("id", userId);
+
+  alert("Profile updated successfully");
+  loadProfile();
+}
+
+async function changePassword() {
+  const password = document.getElementById("newPassword").value;
+  if (password.length < 6) {
+    alert("Password must be at least 6 characters");
+    return;
+  }
+
+  await supabase.auth.updateUser({ password });
+  alert("Password updated");
+  document.getElementById("newPassword").value = "";
+}
+
+async function logout() {
+  await supabase.auth.signOut();
+  window.location.href = "login.html";
+}
+
+loadProfile();
+</script>
+
+</body>
+</html>
