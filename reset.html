@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>TapTrust Bank | Reset Password</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      height: 100vh;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .bank-card {
+      background: #ffffff;
+      width: 100%;
+      max-width: 380px;
+      padding: 35px 30px;
+      border-radius: 14px;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+      text-align: center;
+    }
+
+    .bank-logo {
+      font-size: 50px;
+      margin-bottom: 10px;
+    }
+
+    h2 {
+      margin: 10px 0;
+      color: #1a2b3c;
+    }
+
+    p {
+      font-size: 14px;
+      color: #555;
+      margin-bottom: 20px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 14px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #0a84ff;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    button:hover {
+      background: #006fe0;
+    }
+
+    .footer-text {
+      margin-top: 18px;
+      font-size: 12px;
+      color: #777;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="bank-card">
+
+    <!-- 🔐 LOGO -->
+    <div class="bank-logo">🔐</div>
+
+    <h2>Create New Password</h2>
+    <p>Please enter your new secure password</p>
+
+    <input
+      type="password"
+      id="password"
+      placeholder="New password"
+      required
+    />
+
+    <input
+      type="password"
+      id="confirmPassword"
+      placeholder="Confirm new password"
+      required
+    />
+
+    <button onclick="updatePassword()">Update Password</button>
+
+    <div class="footer-text">
+      TapTrust Bank • Security First
+    </div>
+
+  </div>
+
+  <!-- Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script>
+    const supabase = window.supabase.createClient(
+      "https://lghhofyhzopfnibodsjw.supabase.co",
+      "PASTE_YOUR_PUBLIC_ANON_KEY"
+    );
+
+    async function updatePassword() {
+      const password = document.getElementById("password").value;
+      const confirmPassword = document.getElementById("confirmPassword").value;
+
+      if (!password || !confirmPassword) {
+        alert("Please fill all fields");
+        return;
+      }
+
+      if (password.length < 6) {
+        alert("Password must be at least 6 characters");
+        return;
+      }
+
+      if (password !== confirmPassword) {
+        alert("Passwords do not match");
+        return;
+      }
+
+      const { error } = await supabase.auth.updateUser({
+        password: password,
+      });
+
+      if (error) {
+        alert(error.message);
+        return;
+      }
+
+      alert("✅ Password updated successfully");
+      window.location.href = "login.html";
+    }
+  </script>
+
+</body>
+</html>
