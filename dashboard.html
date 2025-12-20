@@ -337,63 +337,60 @@
   </div>
 
   <script>
-    <script>
-  /* ---------- PAGE NAV ---------- */
-  function showPage(pageId) {
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.getElementById(pageId).classList.add('active');
-    event.target.classList.add('active');
+/* ---------- PAGE NAVIGATION ---------- */
+function showPage(pageId) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(pageId).classList.add('active');
+  event.target.classList.add('active');
+}
+
+/* ---------- LOGOUT ---------- */
+function logout() {
+  window.location.href = "login.html";
+}
+
+/* ---------- SUPABASE CLIENT ---------- */
+const supabase = window.supabase.createClient(
+  "https://lghhofyhzopfnibodsjw.supabase.co",
+  "YOUR_REAL_PUBLIC_ANON_KEY"
+);
+
+/* ---------- ADD MONEY (PART B) ---------- */
+async function submitDeposit() {
+  const amount = document.getElementById("deposit_amount").value;
+  const method = document.getElementById("deposit_method").value;
+  const txid = document.getElementById("deposit_txid").value;
+  const screenshot = document.getElementById("deposit_screenshot").value;
+
+  if (!amount || amount <= 0) {
+    alert("Enter a valid amount");
+    return;
   }
 
-  function logout() {
-    alert("Logged out");
-    window.location.href = "login.html";
+  const { data: userData } = await supabase.auth.getUser();
+  if (!userData.user) {
+    alert("Not logged in");
+    return;
   }
 
-  /* ---------- SUPABASE ---------- */
-  const supabase = window.supabase.createClient(
-    "https://lghhofyhzopfnibodsjw.supabase.co",
-    "PASTE_YOUR_PUBLIC_ANON_KEY"
-  );
+  const { error } = await supabase.from("deposits").insert({
+    user_id: userData.user.id,
+    amount: amount,
+    method: method,
+    txid: txid,
+    screenshot_url: screenshot,
+    status: "pending"
+  });
 
-  /* ---------- ADD MONEY (PART B) ---------- */
-  async function submitDeposit() {
-    const amount = document.getElementById("deposit_amount").value;
-    const method = document.getElementById("deposit_method").value;
-    const txid = document.getElementById("deposit_txid").value;
-    const screenshot = document.getElementById("deposit_screenshot").value;
-
-    if (!amount || amount <= 0) {
-      alert("Enter a valid amount");
-      return;
-    }
-
-    const { data } = await supabase.auth.getUser();
-    const user = data.user;
-
-    if (!user) {
-      alert("Not logged in");
-      return;
-    }
-
-    const { error } = await supabase
-      .from("deposits")
-      .insert({
-        user_id: user.id,
-        amount,
-        method,
-        txid,
-        screenshot_url: screenshot
-      });
-
-    if (error) {
-      alert(error.message);
-      return;
-    }
-
-    alert("Deposit submitted. Waiting for admin approval.");
+  if (error) {
+    alert(error.message);
+    return;
   }
+
+  alert("Deposit submitted. Waiting for admin approval.");
+}
 </script>
+
 
     }
   </script>
