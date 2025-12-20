@@ -268,9 +268,35 @@
 
       <!-- ADD MONEY -->
       <div id="addmoney" class="page">
-        <h2>Add Money</h2>
-        <p>Deposit system coming next.</p>
-      </div>
+  <h2>Add Money</h2>
+
+  <div class="card">
+    <label>Amount ($)</label>
+    <input id="deposit_amount" type="number" placeholder="Enter amount">
+
+    <label>Payment Method</label>
+    <select id="deposit_method">
+      <option value="USDT TRC20">USDT (TRC20)</option>
+      <option value="BTC">Bitcoin (BTC)</option>
+      <option value="OKX UID">OKX UID</option>
+    </select>
+
+    <div style="margin-top:10px">
+      <p><strong>USDT TRC20 Address:</strong><br> TXXXXXXXXXXXX</p>
+      <p><strong>BTC Address:</strong><br> 1XXXXXXXXXXXX</p>
+      <p><strong>OKX UID:</strong><br> 123456789</p>
+    </div>
+
+    <label>Transaction ID</label>
+    <input id="deposit_txid" placeholder="Transaction ID">
+
+    <label>Screenshot URL (optional)</label>
+    <input id="deposit_screenshot" placeholder="Screenshot link">
+
+    <button onclick="submitDeposit()">Submit Deposit</button>
+  </div>
+</div>
+
 
       <!-- TRANSACTIONS -->
       <div id="transactions" class="page">
