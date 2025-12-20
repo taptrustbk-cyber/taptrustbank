@@ -1,178 +1,100 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <title>TapTrust Admin Dashboard</title>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<meta charset="UTF-8">
+<title>Admin | Approve Deposits</title>
 
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #041b33, #062a4f);
-      color: #fff;
-    }
-
-    .container {
-      max-width: 1100px;
-      margin: 40px auto;
-      padding: 20px;
-    }
-
-    h1 {
-      text-align: center;
-      color: #f5c451;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 30px;
-      background: #0b2a45;
-      border-radius: 10px;
-      overflow: hidden;
-    }
-
-    th, td {
-      padding: 12px;
-      text-align: center;
-      border-bottom: 1px solid #123d66;
-    }
-
-    th {
-      background: #08243d;
-      color: #f5c451;
-    }
-
-    tr:hover {
-      background: #0e365a;
-    }
-
-    button {
-      padding: 6px 12px;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-
-    .approve {
-      background: #28a745;
-      color: white;
-    }
-
-    .reject {
-      background: #dc3545;
-      color: white;
-      margin-left: 5px;
-    }
-
-    .logout {
-      background: #f5c451;
-      color: #000;
-      float: right;
-      margin-top: -50px;
-    }
-  </style>
+<style>
+body {
+  background:#020617;
+  color:#fff;
+  font-family:Arial;
+  padding:30px;
+}
+.card {
+  background:#0b1220;
+  padding:15px;
+  border-radius:10px;
+  margin-bottom:12px;
+}
+button {
+  background:#22c55e;
+  border:none;
+  padding:8px 14px;
+  border-radius:6px;
+  cursor:pointer;
+  font-weight:bold;
+}
+</style>
 </head>
 
 <body>
-  <div class="container">
-    <button class="logout" onclick="logout()">Logout</button>
-    <h1>TapTrust – Admin Deposits</h1>
 
-    <table>
-      <thead>
-        <tr>
-          <th>Email</th>
-          <th>Amount</th>
-          <th>Method</th>
-          <th>TXID</th>
-          <th>Status</th>
-          <th>Date</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody id="depositTable"></tbody>
-    </table>
-  </div>
+<h2>Pending Deposits</h2>
+<div id="deposits"></div>
 
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 <script>
-/* ================= CONFIG ================= */
-const SUPABASE_URL = "https://lghhofyhzopfnibodsjw.supabase.co";
-const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxnaGhvZnloem9wZm5pYm9kc2p3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU5OTAzODEsImV4cCI6MjA4MTU2NjM4MX0.oTxQ7U5HcP9OO7rAuMN7awk1EQQn_TuDrL-AZ-uK-5w";
-const ADMIN_EMAIL = "admin@taptrust.com";
+const supabase = supabasejs.createClient(
+  "https://lghhofyhzopfnibodsjw.supabase.co",
+  "YOUR_PUBLIC_ANON_KEY"
+);
 
-/* ================= INIT ================= */
-const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-/* ================= AUTH CHECK ================= */
-async function checkAdmin() {
-  const { data: { user } } = await supabase.auth.getUser();
-
-  if (!user || user.email !== ADMIN_EMAIL) {
-    alert("Access denied");
-    window.location.href = "login.html";
-  }
-}
-
-/* ================= LOAD DEPOSITS ================= */
 async function loadDeposits() {
-  const { data, error } = await supabase
-    .from("deposit")
+  const { data } = await supabase
+    .from("deposits")
     .select("*")
-    .order("created_at", { ascending: false });
+    .eq("status", "pending");
 
-  if (error) {
-    alert("Error loading deposits");
-    return;
-  }
-
-  const table = document.getElementById("depositTable");
-  table.innerHTML = "";
-
+  let html = "";
   data.forEach(d => {
-    table.innerHTML += `
-      <tr>
-        <td>${d.email}</td>
-        <td>$${d.amount}</td>
-        <td>${d.method}</td>
-        <td>${d.txid}</td>
-        <td>${d.status}</td>
-        <td>${new Date(d.created_at).toLocaleString()}</td>
-        <td>
-          ${d.status === "pending" ? `
-            <button class="approve" onclick="updateStatus('${d.id}','approved')">Approve</button>
-            <button class="reject" onclick="updateStatus('${d.id}','rejected')">Reject</button>
-          ` : "-"}
-        </td>
-      </tr>
+    html += `
+      <div class="card">
+        <b>User:</b> ${d.user_id}<br>
+        <b>Amount:</b> $${d.amount}<br>
+        <b>Method:</b> ${d.method}<br>
+        <b>TXID:</b> ${d.txid}<br><br>
+        <button onclick="approve('${d.id}', '${d.user_id}', ${d.amount})">
+          Approve
+        </button>
+      </div>
     `;
   });
+
+  document.getElementById("deposits").innerHTML = html;
 }
 
-/* ================= UPDATE STATUS ================= */
-async function updateStatus(id, status) {
-  const { error } = await supabase
-    .from("deposit")
-    .update({ status })
-    .eq("id", id);
+async function approve(depositId, userId, amount) {
 
-  if (error) {
-    alert("Update failed");
-  } else {
-    loadDeposits();
-  }
+  // 1. Mark deposit approved
+  await supabase
+    .from("deposits")
+    .update({ status: "approved" })
+    .eq("id", depositId);
+
+  // 2. Add balance
+  const { data: wallet } = await supabase
+    .from("wallets")
+    .select("balance")
+    .eq("user_id", userId)
+    .single();
+
+  await supabase
+    .from("wallets")
+    .update({ balance: wallet.balance + amount })
+    .eq("user_id", userId);
+
+  // 3. Add transaction history
+  await supabase.from("transactions").insert({
+    user_id: userId,
+    amount: amount,
+    description: "Deposit approved by admin"
+  });
+
+  alert("Deposit approved & balance updated");
+  loadDeposits();
 }
 
-/* ================= LOGOUT ================= */
-async function logout() {
-  await supabase.auth.signOut();
-  window.location.href = "login.html";
-}
-
-/* ================= START ================= */
-checkAdmin();
 loadDeposits();
 </script>
 
