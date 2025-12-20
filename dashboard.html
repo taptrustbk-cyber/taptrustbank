@@ -1,214 +1,240 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Dashboard | TapTrust Bank</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-
-  <!-- Supabase -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <meta charset="UTF-8" />
+  <title>TapTrust Bank | Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <style>
     * {
-      margin: 0;
-      padding: 0;
       box-sizing: border-box;
-      font-family: 'Poppins', sans-serif;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     }
 
     body {
-      height: 100vh;
-      background:
-        linear-gradient(rgba(0,0,0,.7), rgba(0,0,0,.7)),
-        url("https://images.unsplash.com/photo-1601597111158-2fceff292cdc");
-      background-size: cover;
-      background-position: center;
-      color: #fff;
+      margin: 0;
       display: flex;
+      min-height: 100vh;
+      background: #f4f6f8;
     }
 
-    /* Sidebar */
+    /* SIDEBAR */
     .sidebar {
       width: 240px;
-      background: rgba(0,0,0,0.6);
-      backdrop-filter: blur(18px);
-      padding: 30px 20px;
+      background: #0f2027;
+      color: #fff;
+      padding: 20px 15px;
       display: flex;
       flex-direction: column;
     }
 
-    .sidebar .logo {
-      font-size: 26px;
-      font-weight: 700;
-      margin-bottom: 40px;
+    .sidebar h2 {
       text-align: center;
-    }
-
-    .sidebar .logo span {
-      color: #00d4ff;
+      margin-bottom: 30px;
     }
 
     .menu a {
       display: block;
-      padding: 12px 16px;
-      border-radius: 14px;
-      color: #fff;
+      padding: 12px 15px;
+      margin-bottom: 8px;
+      color: #ddd;
       text-decoration: none;
-      margin-bottom: 12px;
-      font-size: 15px;
-      opacity: 0.9;
+      border-radius: 6px;
+      cursor: pointer;
     }
 
-    .menu a:hover {
-      background: rgba(255,255,255,0.12);
+    .menu a:hover,
+    .menu a.active {
+      background: #203a43;
+      color: #fff;
     }
 
-    /* Main */
+    .logout {
+      margin-top: auto;
+      background: #b71c1c;
+      color: #fff;
+      text-align: center;
+      padding: 12px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    /* MAIN */
     .main {
       flex: 1;
-      padding: 30px;
-      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
     }
 
     .topbar {
+      background: #fff;
+      padding: 15px 25px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 30px;
-    }
-
-    .welcome {
-      font-size: 18px;
-      font-weight: 500;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     }
 
     .profile-btn {
-      background: rgba(255,255,255,0.15);
-      padding: 10px 18px;
-      border-radius: 20px;
       cursor: pointer;
-      font-size: 14px;
+      font-size: 18px;
     }
 
-    /* Cards */
+    .content {
+      padding: 25px;
+    }
+
+    /* PAGES */
+    .page {
+      display: none;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    /* CARDS */
     .cards {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 20px;
     }
 
     .card {
-      background: rgba(255,255,255,0.1);
-      backdrop-filter: blur(14px);
-      border-radius: 20px;
-      padding: 25px;
-      box-shadow: 0 10px 30px rgba(0,0,0,.4);
-    }
-
-    .card h3 {
-      font-size: 16px;
-      margin-bottom: 12px;
-      opacity: 0.85;
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
     }
 
     .balance {
-      font-size: 34px;
-      font-weight: 700;
-      color: #00ffcc;
+      font-size: 32px;
+      font-weight: bold;
+      color: #0a84ff;
     }
 
     .coming {
-      font-size: 14px;
-      opacity: 0.7;
-    }
-
-    @media(max-width: 768px) {
-      .sidebar {
-        display: none;
-      }
+      text-align: center;
+      font-size: 22px;
+      color: #999;
+      margin-top: 50px;
     }
   </style>
 </head>
 
 <body>
 
-  <!-- Sidebar -->
+  <!-- SIDEBAR -->
   <div class="sidebar">
-    <div class="logo">Tap<span>Trust</span></div>
+    <h2>🏦 TapTrust</h2>
+
     <div class="menu">
-      <a href="#">🏠 Home</a>
-      <a href="#">🛒 Market</a>
-      <a href="#">📈 Trading</a>
-      <a href="#">💼 Wallet</a>
-      <a href="#">⚙️ Settings</a>
-      <a href="#">📩 Support</a>
+      <a class="active" onclick="showPage('home')">Dashboard</a>
+      <a onclick="showPage('wallet')">Wallet</a>
+      <a onclick="showPage('market')">Market</a>
+      <a onclick="showPage('trading')">Trading</a>
+      <a onclick="showPage('addmoney')">Add Money</a>
+      <a onclick="showPage('transactions')">Transactions</a>
+      <a onclick="showPage('settings')">Settings</a>
+      <a onclick="showPage('support')">Support</a>
     </div>
+
+    <div class="logout" onclick="logout()">Logout</div>
   </div>
 
-  <!-- Main -->
+  <!-- MAIN -->
   <div class="main">
     <div class="topbar">
-      <div class="welcome" id="welcome">Welcome</div>
-      <div class="profile-btn" onclick="logout()">Logout</div>
+      <div>Welcome to TapTrust Bank</div>
+      <div class="profile-btn" onclick="showPage('profile')">👤 Profile</div>
     </div>
 
-    <div class="cards">
-      <div class="card">
-        <h3>Wallet Balance</h3>
-        <div class="balance">$<span id="balance">0</span></div>
+    <div class="content">
+
+      <!-- HOME -->
+      <div id="home" class="page active">
+        <h2>Dashboard</h2>
+        <div class="cards">
+          <div class="card">
+            <h4>Wallet Balance</h4>
+            <div class="balance">$0.00</div>
+          </div>
+          <div class="card">
+            <h4>Status</h4>
+            <p>Active</p>
+          </div>
+          <div class="card">
+            <h4>Security</h4>
+            <p>Protected 🔐</p>
+          </div>
+        </div>
       </div>
 
-      <div class="card">
-        <h3>Market</h3>
-        <div class="coming">Visa services & products coming soon</div>
+      <!-- WALLET -->
+      <div id="wallet" class="page">
+        <h2>Wallet</h2>
+        <p>Your balance: <strong>$0.00</strong></p>
       </div>
 
-      <div class="card">
-        <h3>Trading</h3>
-        <div class="coming">Coming Soon</div>
+      <!-- MARKET -->
+      <div id="market" class="page">
+        <h2>Market</h2>
+        <p>Visa services will appear here.</p>
       </div>
+
+      <!-- TRADING -->
+      <div id="trading" class="page">
+        <div class="coming">📈 Trading — Coming Soon</div>
+      </div>
+
+      <!-- ADD MONEY -->
+      <div id="addmoney" class="page">
+        <h2>Add Money</h2>
+        <p>Deposit system coming next.</p>
+      </div>
+
+      <!-- TRANSACTIONS -->
+      <div id="transactions" class="page">
+        <h2>Transaction History</h2>
+        <p>No transactions yet.</p>
+      </div>
+
+      <!-- PROFILE -->
+      <div id="profile" class="page">
+        <h2>Profile</h2>
+        <p>Name: Customer</p>
+        <p>Email: user@email.com</p>
+      </div>
+
+      <!-- SETTINGS -->
+      <div id="settings" class="page">
+        <h2>Settings</h2>
+        <p>Change password & language later.</p>
+      </div>
+
+      <!-- SUPPORT -->
+      <div id="support" class="page">
+        <h2>Support</h2>
+        <p>Email: <strong>taptrust.bk@gmail.com</strong></p>
+      </div>
+
     </div>
   </div>
 
-<script>
-  const supabase = supabase.createClient(
-    "https://lghhofyhzopfnibodsjw.supabase.co",
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxnaGhvZnloem9wZm5pYm9kc2p3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU5OTAzODEsImV4cCI6MjA4MTU2NjM4MX0.oTxQ7U5HcP9OO7rAuMN7awk1EQQn_TuDrL-AZ-uK-5w"
-  );
+  <script>
+    function showPage(pageId) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById(pageId).classList.add('active');
 
-  async function checkSession() {
-    const { data } = await supabase.auth.getUser();
-    if (!data.user) {
+      document.querySelectorAll('.menu a').forEach(a => a.classList.remove('active'));
+      event.target.classList.add('active');
+    }
+
+    function logout() {
+      alert("Logged out");
       window.location.href = "login.html";
-    } else {
-      document.getElementById("welcome").innerText =
-        "Welcome, " + data.user.email;
-      loadProfile(data.user.id);
     }
-  }
-
-  async function loadProfile(userId) {
-    const { data } = await supabase
-      .from("profiles")
-      .select("balance")
-      .eq("id", userId)
-      .single();
-
-    if (data) {
-      document.getElementById("balance").innerText = data.balance;
-    }
-  }
-
-  async function logout() {
-    await supabase.auth.signOut();
-    window.location.href = "login.html";
-  }
-
-  checkSession();
-</script>
+  </script>
 
 </body>
 </html>
