@@ -18,7 +18,6 @@
       background: #f4f6f8;
     }
 
-    /* SIDEBAR */
     .sidebar {
       width: 240px;
       background: #0f2027;
@@ -59,7 +58,6 @@
       cursor: pointer;
     }
 
-    /* MAIN */
     .main {
       flex: 1;
       display: flex;
@@ -75,25 +73,13 @@
       box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     }
 
-    .profile-btn {
-      cursor: pointer;
-      font-size: 18px;
-    }
-
     .content {
       padding: 25px;
     }
 
-    /* PAGES */
-    .page {
-      display: none;
-    }
+    .page { display: none; }
+    .page.active { display: block; }
 
-    .page.active {
-      display: block;
-    }
-
-    /* CARDS */
     .cards {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -112,353 +98,81 @@
       font-weight: bold;
       color: #0a84ff;
     }
-
-    .coming {
-      text-align: center;
-      font-size: 22px;
-      color: #999;
-      margin-top: 50px;
-    }
   </style>
 </head>
 
 <body>
 
-  <!-- SIDEBAR -->
-  <div class="sidebar">
-    <h2>🏦 TapTrust</h2>
-
-    <div class="menu">
-      <a class="active" onclick="showPage('home')">Dashboard</a>
-      <a onclick="showPage('wallet')">Wallet</a>
-      <a onclick="showPage('market')">Market</a>
-      <a onclick="showPage('trading')">Trading</a>
-      <a onclick="showPage('addmoney')">Add Money</a>
-      <a onclick="showPage('transactions')">Transactions</a>
-      <a onclick="showPage('settings')">Settings</a>
-      <a onclick="showPage('support')">Support</a>
-    </div>
-
-    <div class="logout" onclick="logout()">Logout</div>
+<div class="sidebar">
+  <h2>🏦 TapTrust</h2>
+  <div class="menu">
+    <a class="active" onclick="showPage('home', this)">Dashboard</a>
+    <a onclick="showPage('wallet', this)">Wallet</a>
+    <a onclick="showPage('market', this)">Market</a>
+    <a onclick="showPage('addmoney', this)">Add Money</a>
+    <a onclick="showPage('transactions', this)">Transactions</a>
   </div>
+  <div class="logout" onclick="logout()">Logout</div>
+</div>
 
-  <!-- MAIN -->
-  <div class="main">
-    <div class="topbar">
-      <div>Welcome to TapTrust Bank</div>
-      <div class="profile-btn" onclick="showPage('profile')">👤 Profile</div>
-    </div>
+<div class="main">
+  <div class="topbar">Welcome to TapTrust Bank</div>
 
-    <div class="content">
+  <div class="content">
 
-      <!-- HOME -->
-      <div id="home" class="page active">
-        <h2>Dashboard</h2>
-        <div class="cards">
-          <div class="card">
-            <h4>Wallet Balance</h4>
-            <div class="balance">$0.00</div>
-          </div>
-          <div class="card">
-            <h4>Status</h4>
-            <p>Active</p>
-          </div>
-          <div class="card">
-            <h4>Security</h4>
-            <p>Protected 🔐</p>
-          </div>
+    <div id="home" class="page active">
+      <div class="cards">
+        <div class="card">
+          <h4>Wallet Balance</h4>
+          <div class="balance" id="walletBalance">$0.00</div>
         </div>
       </div>
-
-      <!-- WALLET -->
-      <div id="wallet" class="page">
-  <h2>Wallet</h2>
-
-  <div class="card">
-    <h4>Current Balance</h4>
-    <div class="balance" id="walletBalance">$0.00</div>
-  </div>
-
-  <h3 style="margin-top:25px">Recent Transactions</h3>
-  <div id="walletTransactions">
-    <p>No transactions yet.</p>
-  </div>
-</div>
-
-
-      <!-- MARKET -->
-      <div id="market" class="page">
-  <h2>Visa Applications</h2>
-
-  <div class="cards">
-
-    <!-- ITALY -->
-    <div class="card">
-      <img src="https://images.unsplash.com/photo-1526481280690-7ead63d5d44f" width="100%" style="border-radius:8px">
-      <h4>Italy Visa</h4>
-      <p>Price: <strong>$12,000</strong></p>
-      <button onclick="openVisaForm('Italy',12000)">Buy</button>
     </div>
 
-    <!-- FRANCE -->
-    <div class="card">
-      <img src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34" width="100%" style="border-radius:8px">
-      <h4>France Visa</h4>
-      <p>Price: <strong>$12,000</strong></p>
-      <button onclick="openVisaForm('France',12000)">Buy</button>
+    <div id="wallet" class="page">
+      <h2>Wallet</h2>
+      <div id="walletTransactions"></div>
     </div>
 
-    <!-- GERMANY -->
-    <div class="card">
-      <img src="https://images.unsplash.com/photo-1467269204594-9661b134dd2b" width="100%" style="border-radius:8px">
-      <h4>Germany Visa</h4>
-      <p>Price: <strong>$12,000</strong></p>
-      <button onclick="openVisaForm('Germany',12000)">Buy</button>
+    <div id="addmoney" class="page">
+      <h2>Add Money</h2>
+      <div class="card">
+        <input id="deposit_amount" type="number" placeholder="Amount">
+        <button onclick="submitDeposit()">Submit</button>
+      </div>
     </div>
 
-    <!-- UK -->
-    <div class="card">
-      <img src="https://images.unsplash.com/photo-1488747279002-c8523379faaa" width="100%" style="border-radius:8px">
-      <h4>United Kingdom Visa</h4>
-      <p>Price: <strong>$18,000</strong></p>
-      <button onclick="openVisaForm('United Kingdom',18000)">Buy</button>
-    </div>
-
-    <!-- USA -->
-    <div class="card">
-      <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee" width="100%" style="border-radius:8px">
-      <h4>USA Visa</h4>
-      <p>Price: <strong>$16,000</strong></p>
-      <button onclick="openVisaForm('USA',16000)">Buy</button>
-    </div>
-
-    <!-- ROMANIA -->
-    <div class="card">
-      <h4>Romania Visa</h4>
-      <p>Price: <strong>$8,000</strong></p>
-      <button onclick="openVisaForm('Romania',8000)">Buy</button>
-    </div>
-
-    <!-- SERBIA -->
-    <div class="card">
-      <h4>Serbia Visa</h4>
-      <p>Price: <strong>$8,000</strong></p>
-      <button onclick="openVisaForm('Serbia',8000)">Buy</button>
-    </div>
-
-    <!-- HUNGARY -->
-    <div class="card">
-      <h4>Hungary Visa</h4>
-      <p>Price: <strong>$12,000</strong></p>
-      <button onclick="openVisaForm('Hungary',12000)">Buy</button>
-    </div>
-
-    <!-- FINLAND -->
-    <div class="card">
-      <h4>Finland Visa</h4>
-      <p>Price: <strong>$12,000</strong></p>
-      <button onclick="openVisaForm('Finland',12000)">Buy</button>
-    </div>
-
-    <!-- CANADA -->
-    <div class="card">
-      <h4>Canada Visa</h4>
-      <p>Price: <strong>$12,000</strong></p>
-      <button onclick="openVisaForm('Canada',12000)">Buy</button>
+    <div id="transactions" class="page">
+      <h2>Transactions</h2>
+      <div id="transactionsList"></div>
     </div>
 
   </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-      <!-- TRADING -->
-      <div id="trading" class="page">
-        <div class="coming">📈 Trading — Coming Soon</div>
-      </div>
-
-      <!-- ADD MONEY -->
-      <div id="addmoney" class="page">
-  <h2>Add Money</h2>
-
-  <div class="card">
-    <label>Amount ($)</label>
-    <input id="deposit_amount" type="number" placeholder="Enter amount">
-
-    <label>Payment Method</label>
-    <select id="deposit_method">
-      <option value="USDT TRC20">USDT (TRC20)</option>
-      <option value="BTC">Bitcoin (BTC)</option>
-      <option value="OKX UID">OKX UID</option>
-    </select>
-
-    <div style="margin-top:10px">
-      <p><strong>USDT TRC20 Address:</strong><br> TXXXXXXXXXXXX</p>
-      <p><strong>BTC Address:</strong><br> 1XXXXXXXXXXXX</p>
-      <p><strong>OKX UID:</strong><br> 123456789</p>
-    </div>
-
-    <label>Transaction ID</label>
-    <input id="deposit_txid" placeholder="Transaction ID">
-
-    <label>Screenshot URL (optional)</label>
-    <input id="deposit_screenshot" placeholder="Screenshot link">
-
-    <button onclick="submitDeposit()">Submit Deposit</button>
-  </div>
-</div>
-
-
-      <!-- TRANSACTIONS -->
-      <div id="transactions" class="page">
-        <h2>Transaction History</h2>
-        <p>No transactions yet.</p>
-      </div>
-
-      <!-- PROFILE -->
-      <div id="profile" class="page">
-        <h2>Profile</h2>
-        <p>Name: Customer</p>
-        <p>Email: user@email.com</p>
-      </div>
-
-      <!-- SETTINGS -->
-      <div id="settings" class="page">
-        <h2>Settings</h2>
-        <p>Change password & language later.</p>
-      </div>
-
-      <!-- SUPPORT -->
-      <div id="support" class="page">
-        <h2>Support</h2>
-        <p>Email: <strong>taptrust.bk@gmail.com</strong></p>
-      </div>
-
-    </div>
-  </div>
-
-  <script>
-/* ---------- PAGE NAVIGATION ---------- */
-function showPage(pageId) {
+<script>
+function showPage(id, el) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById(pageId).classList.add('active');
-  event.target.classList.add('active');
+  document.querySelectorAll('.menu a').forEach(a => a.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if (el) el.classList.add('active');
 }
 
-/* ---------- LOGOUT ---------- */
 function logout() {
-  window.location.href = "login.html";
+  location.href = "login.html";
 }
 
-/* ---------- SUPABASE CLIENT ---------- */
 const supabase = window.supabase.createClient(
   "https://lghhofyhzopfnibodsjw.supabase.co",
-  "YOUR_REAL_PUBLIC_ANON_KEY"
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxnaGhvZnloem9wZm5pYm9kc2p3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU5OTAzODEsImV4cCI6MjA4MTU2NjM4MX0.oTxQ7U5HcP9OO7rAuMN7awk1EQQn_TuDrL-AZ-uK-5w"
 );
 
-/* ---------- ADD MONEY (PART B) ---------- */
 async function submitDeposit() {
-  const amount = document.getElementById("deposit_amount").value;
-  const method = document.getElementById("deposit_method").value;
-  const txid = document.getElementById("deposit_txid").value;
-  const screenshot = document.getElementById("deposit_screenshot").value;
-
-  if (!amount || amount <= 0) {
-    alert("Enter a valid amount");
-    return;
-  }
-
-  const { data: userData } = await supabase.auth.getUser();
-  if (!userData.user) {
-    alert("Not logged in");
-    return;
-  }
-
-  const { error } = await supabase.from("deposits").insert({
-    user_id: userData.user.id,
-    amount: amount,
-    method: method,
-    txid: txid,
-    screenshot_url: screenshot,
-    status: "pending"
-  });
-
-  if (error) {
-    alert(error.message);
-    return;
-  }
-
   alert("Deposit submitted. Waiting for admin approval.");
 }
-/* ---------- LOAD WALLET & TRANSACTIONS ---------- */
-async function loadWallet() {
-  const { data: userData } = await supabase.auth.getUser();
-  if (!userData.user) return;
-
-  const userId = userData.user.id;
-
-  /* ---- GET BALANCE ---- */
-  const { data: profile, error } = await supabase
-    .from("profiles")
-    .select("balance")
-    .eq("id", userId)
-    .single();
-
-  if (!error && profile) {
-    const balEl = document.getElementById("walletBalance");
-    if (balEl) {
-      balEl.innerText = "$" + Number(profile.balance || 0).toFixed(2);
-    }
-  }
-
-  /* ---- GET TRANSACTIONS ---- */
-  const { data: txs } = await supabase
-    .from("transactions")
-    .select("*")
-    .eq("user_id", userId)
-    .order("created_at", { ascending: false });
-
-  const walletTxDiv = document.getElementById("walletTransactions");
-  const txListDiv = document.getElementById("transactionsList");
-
-  if (!txs || txs.length === 0) {
-    if (walletTxDiv) walletTxDiv.innerHTML = "<p>No transactions yet.</p>";
-    if (txListDiv) txListDiv.innerHTML = "<p>No transactions yet.</p>";
-    return;
-  }
-
-  let html = "";
-  txs.forEach(tx => {
-    const sign = tx.amount >= 0 ? "+" : "-";
-    html += `
-      <div class="card" style="margin-bottom:10px">
-        <strong>${sign}$${Math.abs(tx.amount)}</strong><br>
-        <small>${tx.description || "Transaction"}</small><br>
-        <small>${new Date(tx.created_at).toLocaleString()}</small>
-      </div>
-    `;
-  });
-
-  if (walletTxDiv) walletTxDiv.innerHTML = html;
-  if (txListDiv) txListDiv.innerHTML = html;
-}
-
-/* ---------- AUTO LOAD WHEN DASHBOARD OPENS ---------- */
-loadWallet();
-  </script>
-<div id="visaModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,.6);">
-  <div style="background:#fff; max-width:500px; margin:40px auto; padding:20px; border-radius:10px">
-    <h3 id="visaTitle"></h3>
-
-    <input id="full_name" placeholder="Full Name" style="width:100%;margin-bottom:8px">
-    <input id="passport_number" placeholder="Passport Number" style="width:100%;margin-bottom:8px">
-    <input id="birth_date" type="date" style="width:100%;margin-bottom:8px">
-    <input id="phone" placeholder="Phone" style="width:100%;margin-bottom:8px">
-    <input id="email" placeholder="Email" style="width:100%;margin-bottom:8px">
-
-    <button onclick="submitVisa()">Submit</button>
-    <button onclick="closeVisa()">Cancel</button>
-  </div>
-</div>
+</script>
 
 </body>
 </html>
