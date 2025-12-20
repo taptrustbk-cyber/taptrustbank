@@ -314,6 +314,20 @@
       window.location.href = "login.html";
     }
   </script>
+<div id="visaModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,.6);">
+  <div style="background:#fff; max-width:500px; margin:40px auto; padding:20px; border-radius:10px">
+    <h3 id="visaTitle"></h3>
+
+    <input id="full_name" placeholder="Full Name" style="width:100%;margin-bottom:8px">
+    <input id="passport_number" placeholder="Passport Number" style="width:100%;margin-bottom:8px">
+    <input id="birth_date" type="date" style="width:100%;margin-bottom:8px">
+    <input id="phone" placeholder="Phone" style="width:100%;margin-bottom:8px">
+    <input id="email" placeholder="Email" style="width:100%;margin-bottom:8px">
+
+    <button onclick="submitVisa()">Submit</button>
+    <button onclick="closeVisa()">Cancel</button>
+  </div>
+</div>
 
 </body>
 </html>
