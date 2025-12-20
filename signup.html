@@ -1,101 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>TapTrust Bank – Create Account</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <title>Create Account | TapTrust Bank</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
   <style>
-    body {
+    * {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #0a1f44, #0e3c68);
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
       height: 100vh;
+      background:
+        linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)),
+        url("taptrust-bg.jpg");
+      background-size: cover;
+      background-position: center;
       display: flex;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
       color: #fff;
     }
 
-    .signup-box {
-      background: #0f2b4f;
-      padding: 30px;
-      width: 350px;
-      border-radius: 12px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    .card {
+      width: 92%;
+      max-width: 440px;
+      padding: 45px 35px;
+      border-radius: 22px;
+      background: rgba(0,0,0,0.55);
+      backdrop-filter: blur(18px);
+      box-shadow: 0 25px 70px rgba(0,0,0,0.8);
+      border: 1px solid rgba(255,215,0,0.25);
+      text-align: center;
     }
 
-    .signup-box h1 {
-      text-align: center;
-      margin-bottom: 5px;
+    .logo {
+      font-size: 34px;
+      font-weight: 700;
+      color: gold;
+      margin-bottom: 10px;
     }
 
-    .signup-box p {
-      text-align: center;
+    .subtitle {
       font-size: 14px;
       opacity: 0.8;
-      margin-bottom: 20px;
+      margin-bottom: 28px;
     }
 
-    .signup-box input {
+    .group {
+      text-align: left;
+      margin-bottom: 18px;
+    }
+
+    .group label {
+      font-size: 13px;
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .group input {
       width: 100%;
-      padding: 12px;
-      margin-bottom: 12px;
-      border-radius: 6px;
+      padding: 14px;
+      border-radius: 10px;
       border: none;
-      outline: none;
-      font-size: 14px;
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+      font-size: 15px;
     }
 
-    .signup-box button {
-      width: 100%;
-      padding: 12px;
-      background: #00c2ff;
-      color: #002;
-      border: none;
-      border-radius: 6px;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .signup-box button:hover {
-      background: #00a6db;
-    }
-
-    .footer-text {
-      text-align: center;
-      font-size: 12px;
-      margin-top: 15px;
-      opacity: 0.7;
-    }
-  </style>
-</head>
-
-<body>
-
-  <div class="signup-box">
-    <h1>TapTrust Bank</h1>
-    <p>Create your secure account</p>
-
-    <form id="signup-form">
-      <input type="text" id="fullName" placeholder="Full Name" required />
-      <input type="email" id="email" placeholder="Email Address" required />
-      <input type="password" id="password" placeholder="Password" required />
-
-      <button type="submit">Create Account</button>
-    </form>
-
-    <div class="footer-text">
-      Secure Banking • Encrypted • Trusted
-    </div>
-  </div>
-
-  <!-- ✅ FIX #1: SUPABASE LIBRARY (MUST BE FIRST) -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-  <!-- ✅ YOUR SIGNUP LOGIC -->
-  <script src="signup.js"></script>
-
-</body>
-</html>
+    .btn
