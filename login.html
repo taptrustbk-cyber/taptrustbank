@@ -1,26 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
   <title>TapTrust Login</title>
-  <link rel="stylesheet" href="login.css">
+  <link rel="stylesheet" href="css/bank.css">
 </head>
-<body>
+<body class="hero-bg">
 
-<div class="login-container">
-  <div class="login-box">
-    <h2>TapTrust Bank</h2>
-    <p>Secure Login</p>
+  <div class="overlay center">
+    <div class="login-box">
+      <h2>TapTrust Login</h2>
 
-    <input type="email" id="email" placeholder="Email">
-    <input type="password" id="password" placeholder="Password">
+      <input id="email" type="email" placeholder="Email">
+      <input id="password" type="password" placeholder="Password">
 
-    <button onclick="login()">Login</button>
-
-    <span id="error"></span>
+      <button onclick="login()">Login</button>
+      <p><a href="signup.html">Create account</a></p>
+    </div>
   </div>
-</div>
 
-<script src="auth.js"></script>
+  <script src="js/supabase.js"></script>
+  <script src="js/login.js"></script>
 </body>
 </html>
