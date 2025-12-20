@@ -327,17 +327,64 @@
   </div>
 
   <script>
-    function showPage(pageId) {
-      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-      document.getElementById(pageId).classList.add('active');
+    <script>
+  /* ---------- PAGE NAV ---------- */
+  function showPage(pageId) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById(pageId).classList.add('active');
+    event.target.classList.add('active');
+  }
 
-      document.querySelectorAll('.menu a').forEach(a => a.classList.remove('active'));
-      event.target.classList.add('active');
+  function logout() {
+    alert("Logged out");
+    window.location.href = "login.html";
+  }
+
+  /* ---------- SUPABASE ---------- */
+  const supabase = window.supabase.createClient(
+    "https://lghhofyhzopfnibodsjw.supabase.co",
+    "PASTE_YOUR_PUBLIC_ANON_KEY"
+  );
+
+  /* ---------- ADD MONEY (PART B) ---------- */
+  async function submitDeposit() {
+    const amount = document.getElementById("deposit_amount").value;
+    const method = document.getElementById("deposit_method").value;
+    const txid = document.getElementById("deposit_txid").value;
+    const screenshot = document.getElementById("deposit_screenshot").value;
+
+    if (!amount || amount <= 0) {
+      alert("Enter a valid amount");
+      return;
     }
 
-    function logout() {
-      alert("Logged out");
-      window.location.href = "login.html";
+    const { data } = await supabase.auth.getUser();
+    const user = data.user;
+
+    if (!user) {
+      alert("Not logged in");
+      return;
+    }
+
+    const { error } = await supabase
+      .from("deposits")
+      .insert({
+        user_id: user.id,
+        amount,
+        method,
+        txid,
+        screenshot_url: screenshot
+      });
+
+    if (error) {
+      alert(error.message);
+      return;
+    }
+
+    alert("Deposit submitted. Waiting for admin approval.");
+  }
+</script>
+
     }
   </script>
 <div id="visaModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,.6);">
