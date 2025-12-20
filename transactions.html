@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>TapTrust Bank | Transactions</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Supabase -->
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      color: #fff;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 20px;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 30px;
+    }
+
+    .logo {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      background: #fff;
+      color: #203a43;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    h1 {
+      font-size: 24px;
+      margin: 0;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 15px 20px;
+      margin-bottom: 15px;
+    }
+
+    .tx {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .amount.plus {
+      color: #4caf50;
+      font-weight: bold;
+    }
+
+    .amount.minus {
+      color: #ff5252;
+      font-weight: bold;
+    }
+
+    .small {
+      font-size: 13px;
+      opacity: 0.85;
+      margin-top: 4px;
+    }
+
+    .empty {
+      text-align: center;
+      opacity: 0.7;
+      margin-top: 40px;
+    }
+
+    .back {
+      margin-top: 30px;
+      text-align: center;
+    }
+
+    .back a {
+      color: #fff;
+      text-decoration: none;
+      opacity: 0.85;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <div class="logo">💳</div>
+    <h1>Transaction History</h1>
+  </div>
+
+  <div id="txList"></div>
+
+  <div class="back">
+    <a href="dashboard.html">← Back to Dashboard</a>
+  </div>
+</div>
+
+<script>
+/* ---------- SUPABASE ---------- */
+const supabase = window.supabase.createClient(
+  "https://YOUR_PROJECT_ID.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxnaGhvZnloem9wZm5pYm9kc2p3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU5OTAzODEsImV4cCI6MjA4MTU2NjM4MX0.oTxQ7U5HcP9OO7rAuMN7awk1EQQn_TuDrL-AZ-uK-5w"
+);
+
+/* ---------- LOAD TRANSACTIONS ---------- */
+async function loadTransactions() {
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) {
+    window.location.href = "login.html";
+    return;
+  }
+
+  const { data, error } = await supabase
+    .from("transactions")
+    .select("*")
+    .or(`sender.eq.${user.id},receiver.eq.${user.id}`)
+    .order("created_at", { ascending: false });
+
+  const txList = document.getElementById("txList");
+
+  if (error) {
+    txList.innerHTML = "<div class='empty'>Failed to load transactions</div>";
+    return;
+  }
+
+  if (!data || data.length === 0) {
+    txList.innerHTML = "<div class='empty'>No transactions yet</div>";
+    return;
+  }
+
+  let html = "";
+
+  data.forEach(tx => {
+    const isSent = tx.sender === user.id;
+    const sign = isSent ? "-" : "+";
+    const cls = isSent ? "minus" : "plus";
+
+    html += `
+      <div class="card">
+        <div class="tx">
+          <div>
+            <strong>${isSent ? "Sent" : "Received"}</strong>
+            <div class="small">
+              ${new Date(tx.created_at).toLocaleString()}
+            </div>
+          </div>
+          <div class="amount ${cls}">
+            ${sign}$${Math.abs(tx.amount)}
+          </div>
+        </div>
+      </div>
+    `;
+  });
+
+  txList.innerHTML = html;
+}
+
+loadTransactions();
+</script>
+
+</body>
+</html>
