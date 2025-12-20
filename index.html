@@ -20,7 +20,7 @@
       height: 100vh;
       background:
         linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)),
-        url("https://images.unsplash.com/photo-1601597111158-2fceff292cdc");
+        url("taptrust-bg.jpg"); /* 👈 YOUR GOLD IMAGE */
       background-size: cover;
       background-position: center;
       display: flex;
@@ -29,74 +29,43 @@
       color: #fff;
     }
 
-    /* Main Card */
     .landing-card {
       width: 92%;
-      max-width: 450px;
-      padding: 45px 35px;
+      max-width: 460px;
+      padding: 48px 38px;
       border-radius: 22px;
-      background: rgba(255,255,255,0.08);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+      background: rgba(0,0,0,0.45);
+      backdrop-filter: blur(18px);
+      box-shadow: 0 25px 70px rgba(0,0,0,0.75);
       text-align: center;
+      border: 1px solid rgba(255,215,0,0.25);
     }
 
-    /* Logo */
     .logo {
-      font-size: 42px;
+      font-size: 44px;
       font-weight: 700;
-      letter-spacing: 1px;
-      margin-bottom: 10px;
-    }
-
-    .logo span {
-      color: #00d4ff;
+      margin-bottom: 12px;
+      color: gold;
     }
 
     .bank-line {
       font-size: 14px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
       opacity: 0.85;
-      margin-bottom: 25px;
+      margin-bottom: 28px;
     }
 
     .welcome-text {
       font-size: 16px;
-      line-height: 1.6;
+      line-height: 1.7;
       opacity: 0.9;
-      margin-bottom: 35px;
     }
 
-    /* Button */
-    .btn-start {
-      display: inline-block;
-      padding: 14px 34px;
-      border-radius: 40px;
-      font-size: 16px;
-      font-weight: 600;
-      text-decoration: none;
-      color: #fff;
-      background: linear-gradient(135deg, #00d4ff, #007bff);
-      box-shadow: 0 10px 25px rgba(0,212,255,0.4);
-      transition: all 0.3s ease;
-    }
-
-    .btn-start:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 15px 35px rgba(0,212,255,0.6);
-    }
-
-    /* Footer */
     .footer {
-      margin-top: 30px;
+      margin-top: 34px;
       font-size: 12px;
       opacity: 0.6;
-    }
-
-    @media (max-width: 480px) {
-      .logo {
-        font-size: 36px;
-      }
     }
   </style>
 </head>
@@ -104,17 +73,14 @@
 <body>
 
   <div class="landing-card">
-    <div class="logo">Tap<span>Trust</span></div>
-    <div class="bank-line">Digital Banking Platform</div>
+    <div class="logo">TapTrust</div>
+    <div class="bank-line">Secure Digital Banking</div>
 
     <div class="welcome-text">
-      Secure, modern, and trusted banking experience.<br>
-      If you want to continue with our bank,<br>
-      click <strong>Get Started</strong>.
+      Bank on trust. Bank with confidence.<br>
+      TapTrust delivers secure, modern financial services<br>
+      designed for reliability and growth.
     </div>
-
-    <!-- Change signup.html later -->
-    <a href="signup.html" class="btn-start">Get Started</a>
 
     <div class="footer">
       © 2025 TapTrust Bank. All rights reserved.
