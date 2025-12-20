@@ -1,24 +1,28 @@
-// signup.js
+const signupForm = document.getElementById("signupForm");
 
-async function signup() {
+signupForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value.trim();
 
-  if (!email || !password) {
-    alert("Please fill all fields");
+  if (password.length < 6) {
+    alert("Password must be at least 6 characters");
     return;
   }
 
   const { data, error } = await supabase.auth.signUp({
     email: email,
-    password: password
+    password: password,
+    options: {
+      emailRedirectTo: window.location.origin + "/login.html"
+    }
   });
 
   if (error) {
-    alert(error.message);
+    alert("Signup failed: " + error.message);
     return;
   }
 
-  alert("Account created! Check your email to confirm.");
-  window.location.href = "login.html";
-}
+  alert("Account created! Please check your email to confirm.");
+});
