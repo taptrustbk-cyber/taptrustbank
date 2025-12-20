@@ -1,0 +1,87 @@
+/* GLOBAL RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+
+/* BACKGROUND */
+.hero-bg {
+  min-height: 100vh;
+  background:
+    linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)),
+    url("../assets/images/taptrust-bg.png") center/cover no-repeat;
+}
+
+/* OVERLAY */
+.overlay {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: 60px;
+}
+
+.overlay.center {
+  justify-content: center;
+}
+
+/* HERO TEXT */
+.hero-content {
+  color: #ffd24d;
+  max-width: 600px;
+}
+
+.hero-content h1 {
+  font-size: 48px;
+  margin-bottom: 20px;
+}
+
+.hero-content p {
+  font-size: 18px;
+  color: #f5f5f5;
+}
+
+.login-btn {
+  display: inline-block;
+  margin-top: 25px;
+  padding: 12px 30px;
+  background: #ffd24d;
+  color: #000;
+  text-decoration: none;
+  border-radius: 30px;
+  font-weight: bold;
+}
+
+/* LOGIN BOX */
+.login-box {
+  background: rgba(0,0,0,0.85);
+  padding: 30px;
+  width: 320px;
+  border-radius: 12px;
+  color: white;
+}
+
+.login-box h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #ffd24d;
+}
+
+.login-box input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  border: none;
+}
+
+.login-box button {
+  width: 100%;
+  padding: 12px;
+  background: #ffd24d;
+  border: none;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+}
