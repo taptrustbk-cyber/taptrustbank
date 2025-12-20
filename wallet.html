@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Wallet | TapTrust Bank</title>
+
+<style>
+* {
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+  margin: 0;
+  background: linear-gradient(135deg, #0f172a, #020617);
+  color: #fff;
+  min-height: 100vh;
+}
+
+/* HEADER */
+.header {
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.logo span {
+  color: #22c55e;
+}
+
+.back {
+  color: #38bdf8;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+/* CONTENT */
+.container {
+  max-width: 900px;
+  margin: auto;
+  padding: 20px;
+}
+
+/* BALANCE CARD */
+.balance-card {
+  background: linear-gradient(135deg, #020617, #0b1220);
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 25px 60px rgba(0,0,0,.6);
+  margin-bottom: 30px;
+}
+
+.balance-card span {
+  font-size: 14px;
+  color: #94a3b8;
+}
+
+.balance-card h1 {
+  font-size: 42px;
+  color: #22c55e;
+  margin: 10px 0 0;
+}
+
+/* TRANSACTIONS */
+h2 {
+  margin-bottom: 15px;
+}
+
+.tx-card {
+  background: #0b1220;
+  padding: 15px;
+  border-radius: 12px;
+  margin-bottom: 12px;
+}
+
+.tx-amount {
+  font-weight: bold;
+}
+
+.tx-amount.plus {
+  color: #22c55e;
+}
+
+.tx-amount.minus {
+  color: #ef4444;
+}
+
+.tx-date {
+  font-size: 12px;
+  color: #94a3b8;
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="logo">Tap<span>Trust</span></div>
+  <a class="back" href="dashboard.html">← Back to Dashboard</a>
+</div>
+
+<!-- CONTENT -->
+<div class="container">
+
+  <!-- BALANCE -->
+  <div class="balance-card">
+    <span>Available Balance</span>
+    <h1 id="walletBalance">$0.00</h1>
+  </div>
+
+  <!-- TRANSACTIONS -->
+  <h2>Transaction History</h2>
+  <div id="txList">
+    <p>Loading transactions...</p>
+  </div>
+
+</div>
+
+<!-- SUPABASE -->
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<script>
+const supabase = window.supabase.createClient(
+  "https://lghhofyhzopfnibodsjw.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxnaGhvZnloem9wZm5pYm9kc2p3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU5OTAzODEsImV4cCI6MjA4MTU2NjM4MX0.oTxQ7U5HcP9OO7rAuMN7awk1EQQn_TuDrL-AZ-uK-5w"
+);
+
+async function loadWallet() {
+  const { data: userData } = await supabase.auth.getUser();
+  if (!userData.user) {
+    window.location.href = "login.html";
+    return;
+  }
+
+  const userId = userData.user.id;
+
+  /* LOAD BALANCE */
+  const { data: wallet } = await supabase
+    .from("wallets")
+    .select("balance")
+    .eq("user_id", userId)
+    .single();
+
+  if (wallet) {
+    document.getElementById("walletBalance").innerText =
+      "$" + Number(wallet.balance).toFixed(2);
+  }
+
+  /* LOAD TRANSACTIONS */
+  const { data: txs } = await supabase
+    .from("transactions")
+    .select("*")
+    .eq("user_id", userId)
+    .order("created_at", { ascending: false });
+
+  const txDiv = document.getElementById("txList");
+  if (!txs || txs.length === 0) {
+    txDiv.innerHTML = "<p>No transactions yet.</p>";
+    return;
+  }
+
+  let html = "";
+  txs.forEach(tx => {
+    const sign = tx.amount >= 0 ? "plus" : "minus";
+    const symbol = tx.amount >= 0 ? "+" : "-";
+    html += `
+      <div class="tx-card">
+        <div class="tx-amount ${sign}">
+          ${symbol}$${Math.abs(tx.amount)}
+        </div>
+        <div>${tx.description}</div>
+        <div class="tx-date">
+          ${new Date(tx.created_at).toLocaleString()}
+        </div>
+      </div>
+    `;
+  });
+
+  txDiv.innerHTML = html;
+}
+
+loadWallet();
+</script>
+
+</body>
+</html>
