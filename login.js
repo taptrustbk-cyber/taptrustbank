@@ -1,6 +1,8 @@
-// login.js
+const loginForm = document.getElementById("loginForm");
 
-async function login() {
+loginForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value.trim();
 
@@ -11,14 +13,14 @@ async function login() {
 
   const { data, error } = await supabase.auth.signInWithPassword({
     email: email,
-    password: password
+    password: password,
   });
 
   if (error) {
-    alert(error.message);
+    alert("Login failed: " + error.message);
     return;
   }
 
-  // Login success
-  window.location.href = "index.html";
-}
+  // ✅ Success
+  window.location.href = "dashboard.html";
+});
