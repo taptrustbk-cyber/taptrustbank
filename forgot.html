@@ -1,33 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>TapTrust Bank – Forgot Password</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <title>TapTrust Bank | Forgot Password</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f4f6f8;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+    * {
+      box-sizing: border-box;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     }
 
-    .box {
-      background: #fff;
-      width: 380px;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    body {
+      margin: 0;
+      height: 100vh;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .bank-card {
+      background: #ffffff;
+      width: 100%;
+      max-width: 380px;
+      padding: 35px 30px;
+      border-radius: 14px;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.25);
       text-align: center;
     }
 
-    h2 {
-      color: #0a1f44;
+    .bank-logo {
+      font-size: 52px;
       margin-bottom: 10px;
+    }
+
+    h2 {
+      margin: 10px 0 5px;
+      color: #1a2b3c;
     }
 
     p {
@@ -39,43 +49,74 @@
     input {
       width: 100%;
       padding: 12px;
-      margin-bottom: 15px;
-      border-radius: 6px;
+      margin-bottom: 14px;
+      border-radius: 8px;
       border: 1px solid #ccc;
+      font-size: 14px;
     }
 
     button {
       width: 100%;
       padding: 12px;
-      background: #007bff;
-      color: white;
+      background: #0a84ff;
+      color: #fff;
       border: none;
-      border-radius: 6px;
-      font-size: 16px;
-      font-weight: bold;
+      border-radius: 8px;
+      font-size: 15px;
       cursor: pointer;
+      font-weight: 600;
     }
 
     button:hover {
-      background: #005fc4;
+      background: #006fe0;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .footer-text {
+      margin-top: 18px;
+      font-size: 12px;
+      color: #777;
     }
   </style>
 </head>
-
 <body>
 
-<div class="box">
-  <h2>Forgot Password</h2>
-  <p>Enter your email and we will send you a reset link.</p>
+  <div class="bank-card">
 
-  <form id="forgot-form">
-    <input type="email" id="email" placeholder="Email address" required />
-    <button type="submit">Send Reset Email</button>
-  </form>
-</div>
+    <!-- 🔐 LOGO -->
+    <div class="bank-logo">🔐</div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="forgot.js"></script>
+    <h2>Forgot Password</h2>
+    <p>Secure password recovery for your TapTrust account</p>
 
+    <!-- STEP 1: EMAIL -->
+    <form id="email-form">
+      <input type="email" id="email" placeholder="Email Address" required />
+      <button type="submit">Send Verification Code</button>
+    </form>
+
+    <!-- STEP 2: CODE -->
+    <form id="code-form" class="hidden">
+      <input type="text" id="code" placeholder="Enter 6-digit Code" maxlength="6" required />
+      <button type="submit">Verify Code</button>
+    </form>
+
+    <!-- STEP 3: NEW PASSWORD -->
+    <form id="password-form" class="hidden">
+      <input type="password" id="newPassword" placeholder="New Password" required />
+      <button type="submit">Update Password</button>
+    </form>
+
+    <div class="footer-text">
+      TapTrust Bank • Secure • Encrypted • Trusted
+    </div>
+
+  </div>
+
+  <!-- JS -->
+  <script src="forget.js"></script>
 </body>
 </html>
