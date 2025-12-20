@@ -1,193 +1,109 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Login | TapTrust Bank</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-
-  <!-- Supabase v2 -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <meta charset="UTF-8" />
+  <title>TapTrust Bank – Sign In</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Poppins', sans-serif;
-    }
-
     body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #0a1f44, #0e3c68);
       height: 100vh;
-      background:
-        linear-gradient(rgba(0,0,0,.65), rgba(0,0,0,.65)),
-        url("https://images.unsplash.com/photo-1601597111158-2fceff292cdc");
-      background-size: cover;
-      background-position: center;
       display: flex;
-      align-items: center;
       justify-content: center;
+      align-items: center;
       color: #fff;
     }
 
-    .login-card {
-      width: 92%;
-      max-width: 420px;
-      padding: 40px 32px;
-      border-radius: 22px;
-      background: rgba(255,255,255,0.08);
-      backdrop-filter: blur(16px);
-      box-shadow: 0 20px 60px rgba(0,0,0,.6);
+    .login-box {
+      background: #0f2b4f;
+      width: 360px;
+      padding: 30px;
+      border-radius: 14px;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.45);
+      text-align: center;
     }
 
     .logo {
-      text-align: center;
-      font-size: 36px;
-      font-weight: 700;
-      margin-bottom: 10px;
+      font-size: 26px;
+      font-weight: bold;
+      margin-bottom: 5px;
     }
 
     .logo span {
-      color: #00d4ff;
+      color: #00c2ff;
     }
 
     .subtitle {
-      text-align: center;
       font-size: 14px;
-      opacity: 0.85;
-      margin-bottom: 30px;
+      opacity: 0.8;
+      margin-bottom: 25px;
     }
 
-    .input-group {
-      margin-bottom: 18px;
-    }
-
-    .input-group input {
+    input {
       width: 100%;
-      padding: 14px 16px;
-      border-radius: 14px;
+      padding: 12px;
+      margin-bottom: 14px;
+      border-radius: 6px;
       border: none;
       outline: none;
-      font-size: 15px;
-      background: rgba(255,255,255,0.15);
-      color: #fff;
+      font-size: 14px;
     }
 
-    .input-group input::placeholder {
-      color: rgba(255,255,255,0.7);
-    }
-
-    .btn-login {
+    button {
       width: 100%;
-      padding: 14px;
-      border-radius: 30px;
+      padding: 12px;
+      background: #00c2ff;
+      color: #002;
       border: none;
+      border-radius: 6px;
       font-size: 16px;
-      font-weight: 600;
+      font-weight: bold;
       cursor: pointer;
-      color: #fff;
-      background: linear-gradient(135deg,#00d4ff,#007bff);
-      box-shadow: 0 10px 25px rgba(0,212,255,0.45);
     }
 
-    .btn-login:hover {
-      opacity: 0.95;
+    button:hover {
+      background: #00a6db;
     }
 
-    .message {
+    .footer {
       margin-top: 15px;
-      font-size: 14px;
-      text-align: center;
-      min-height: 20px;
-    }
-
-    .signup-link {
-      margin-top: 20px;
-      text-align: center;
-      font-size: 14px;
-      opacity: 0.9;
-    }
-
-    .signup-link a {
-      color: #00d4ff;
-      text-decoration: none;
-      font-weight: 600;
+      font-size: 12px;
+      opacity: 0.7;
     }
   </style>
 </head>
 
 <body>
 
-  <div class="login-card">
-    <div class="logo">Tap<span>Trust</span></div>
-    <div class="subtitle">Secure Login</div>
-
-    <div class="input-group">
-      <input type="email" id="email" placeholder="Email address">
+  <div class="login-box">
+    <!-- LOGO -->
+    <div class="logo">
+      Tap<span>Trust</span>
+    </div>
+    <div class="subtitle">
+      Secure Bank Login
     </div>
 
-    <div class="input-group">
-      <input type="password" id="password" placeholder="Password">
-    </div>
+    <!-- LOGIN FORM -->
+    <form id="login-form">
+      <input type="email" id="email" placeholder="Email address" required />
+      <input type="password" id="password" placeholder="Password" required />
+      <button type="submit">Sign In</button>
+    </form>
 
-    <button class="btn-login" id="loginBtn">Login</button>
-
-    <div class="message" id="message"></div>
-
-    <div class="signup-link">
-      Don’t have an account?
-      <a href="signup.html">Create Account</a>
+    <div class="footer">
+      © TapTrust Bank • Secure & Trusted
     </div>
   </div>
 
-<script>
-  /* ====== SUPABASE CONFIG ====== */
-  const SUPABASE_URL = "https://lghhofyhzopfnibodsjw.supabase.co";
-  const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxnaGhvZnloem9wZm5pYm9kc2p3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU5OTAzODEsImV4cCI6MjA4MTU2NjM4MX0.oTxQ7U5HcP9OO7rAuMN7awk1EQQn_TuDrL-AZ-uK-5w";
+  <!-- ✅ IMPORTANT: SUPABASE FIRST -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  const client = supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_ANON_KEY
-  );
-
-  /* ====== LOGIN BUTTON FIX ====== */
-  document.getElementById("loginBtn").addEventListener("click", async () => {
-    const email = document.getElementById("email").value.trim();
-    const password = document.getElementById("password").value.trim();
-    const message = document.getElementById("message");
-
-    if (!email || !password) {
-      message.style.color = "orange";
-      message.innerText = "Please enter email and password.";
-      return;
-    }
-
-    message.style.color = "#fff";
-    message.innerText = "Signing in...";
-
-    const { data, error } = await client.auth.signInWithPassword({
-      email,
-      password
-    });
-
-    if (error) {
-      message.style.color = "red";
-      message.innerText = error.message;
-      return;
-    }
-
-    if (!data.user.email_confirmed_at) {
-      message.style.color = "orange";
-      message.innerText = "Please confirm your email first.";
-      await client.auth.signOut();
-      return;
-    }
-
-    window.location.href = "dashboard.html";
-  });
-</script>
+  <!-- ✅ LOGIN LOGIC -->
+  <script src="login.js"></script>
 
 </body>
 </html>
