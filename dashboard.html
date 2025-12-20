@@ -389,10 +389,61 @@ async function submitDeposit() {
 
   alert("Deposit submitted. Waiting for admin approval.");
 }
-</script>
+/* ---------- LOAD WALLET & TRANSACTIONS ---------- */
+async function loadWallet() {
+  const { data: userData } = await supabase.auth.getUser();
+  if (!userData.user) return;
 
+  const userId = userData.user.id;
 
+  /* ---- GET BALANCE ---- */
+  const { data: profile, error } = await supabase
+    .from("profiles")
+    .select("balance")
+    .eq("id", userId)
+    .single();
+
+  if (!error && profile) {
+    const balEl = document.getElementById("walletBalance");
+    if (balEl) {
+      balEl.innerText = "$" + Number(profile.balance || 0).toFixed(2);
     }
+  }
+
+  /* ---- GET TRANSACTIONS ---- */
+  const { data: txs } = await supabase
+    .from("transactions")
+    .select("*")
+    .eq("user_id", userId)
+    .order("created_at", { ascending: false });
+
+  const walletTxDiv = document.getElementById("walletTransactions");
+  const txListDiv = document.getElementById("transactionsList");
+
+  if (!txs || txs.length === 0) {
+    if (walletTxDiv) walletTxDiv.innerHTML = "<p>No transactions yet.</p>";
+    if (txListDiv) txListDiv.innerHTML = "<p>No transactions yet.</p>";
+    return;
+  }
+
+  let html = "";
+  txs.forEach(tx => {
+    const sign = tx.amount >= 0 ? "+" : "-";
+    html += `
+      <div class="card" style="margin-bottom:10px">
+        <strong>${sign}$${Math.abs(tx.amount)}</strong><br>
+        <small>${tx.description || "Transaction"}</small><br>
+        <small>${new Date(tx.created_at).toLocaleString()}</small>
+      </div>
+    `;
+  });
+
+  if (walletTxDiv) walletTxDiv.innerHTML = html;
+  if (txListDiv) txListDiv.innerHTML = html;
+}
+
+/* ---------- AUTO LOAD WHEN DASHBOARD OPENS ---------- */
+loadWallet();
   </script>
 <div id="visaModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,.6);">
   <div style="background:#fff; max-width:500px; margin:40px auto; padding:20px; border-radius:10px">
