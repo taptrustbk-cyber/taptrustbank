@@ -12,4 +12,42 @@ const supabase = window.supabase.createClient(
   SUPABASE_ANON_KEY
 );
 
-// 3️⃣ Handle forgot password fo
+// 3️⃣ Handle forgot password form
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.getElementById("forgot-form");
+
+  if (!form) {
+    console.error("Forgot form not found");
+    return;
+  }
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const emailInput = document.getElementById("email");
+    const email = emailInput.value.trim();
+
+    if (!email) {
+      alert("Please enter your email");
+      return;
+    }
+
+    // 4️⃣ Send reset email
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo:
+        "https://taptrustbk-cyber.github.io/taptrustbank/reset.html",
+    });
+
+    if (error) {
+      alert("Error: " + error.message);
+      return;
+    }
+
+    // 5️⃣ Success message
+    alert(
+      "Security email sent.\nPlease check your inbox to reset your password."
+    );
+
+    emailInput.value = "";
+  });
+});
