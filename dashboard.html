@@ -1,251 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<title>TapTrust Bank | Dashboard</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<!-- SUPABASE -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<style>
-/* ---------- BASE ---------- */
-* { box-sizing: border-box; font-family: "Segoe UI", sans-serif; }
-body {
-  margin: 0;
-  min-height: 100vh;
-  background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
-  color:#111;
-}
-
-/* ---------- TOP BAR ---------- */
-.topbar {
-  background:#fff;
-  padding:15px 20px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  box-shadow:0 4px 12px rgba(0,0,0,.1);
-}
-
-.menu-btn {
-  font-size:26px;
-  cursor:pointer;
-}
-
-/* LOGO (CODE ONLY) */
-.logo {
-  font-weight:700;
-  font-size:22px;
-  color:#0a84ff;
-}
-.logo span {
-  color:#000;
-}
-
-/* ---------- SIDEBAR ---------- */
-.sidebar {
-  position:fixed;
-  left:-260px;
-  top:0;
-  width:260px;
-  height:100%;
-  background:#0f2027;
-  padding:20px;
-  transition:.3s;
-  z-index:1000;
-}
-.sidebar.active { left:0; }
-
-.sidebar a {
-  display:block;
-  padding:12px;
-  color:#fff;
-  text-decoration:none;
-  margin-bottom:8px;
-  border-radius:6px;
-}
-.sidebar a:hover { background:#203a43; }
-
-.logout {
-  margin-top:30px;
-  background:#b71c1c;
-  text-align:center;
-  padding:12px;
-  border-radius:6px;
-  cursor:pointer;
-}
-
-/* ---------- CONTENT ---------- */
-.container {
-  max-width:900px;
-  margin:30px auto;
-  padding:20px;
-}
-
-.card {
-  background:#fff;
-  padding:25px;
-  border-radius:14px;
-  box-shadow:0 10px 30px rgba(0,0,0,.15);
-  margin-bottom:20px;
-}
-
-.balance {
-  font-size:36px;
-  font-weight:700;
-  color:#0a84ff;
-  text-align:center;
-}
-
-/* BUTTONS */
-.actions {
-  display:flex;
-  gap:15px;
-  justify-content:center;
-  margin-top:20px;
-}
-.actions button {
-  padding:14px 22px;
-  border:none;
-  border-radius:10px;
-  font-size:16px;
-  cursor:pointer;
-  background:#0a84ff;
-  color:#fff;
-}
-
-/* ---------- PAGES ---------- */
-.page { display:none; }
-.page.active { display:block; }
-</style>
+  <title>ZenoPay Dashboard</title>
+  <script src="js/supabase.js"></script>
 </head>
 
 <body>
+<h1>ZenoPay Wallet</h1>
+<p id="user"></p>
 
-<!-- SIDEBAR -->
-<div class="sidebar" id="sidebar">
-  <a onclick="showPage('home')">Dashboard</a>
-  <a onclick="showPage('wallet')">Wallet</a>
-  <a onclick="showPage('market')">Market</a>
-  <a onclick="showPage('addmoney')">Add Money</a>
-  <a onclick="showPage('transactions')">Transactions</a>
-  <div class="logout" onclick="logout()">Logout</div>
-</div>
-
-<!-- TOP BAR -->
-<div class="topbar">
-  <div class="menu-btn" onclick="toggleMenu()">☰</div>
-  <div class="logo">Tap<span>Trust</span> Bank</div>
-</div>
-
-<!-- CONTENT -->
-<div class="container">
-
-<!-- HOME -->
-<div id="home" class="page active">
-  <div class="card">
-    <h3 style="text-align:center">Wallet Balance</h3>
-    <div class="balance" id="balance">$0.00</div>
-
-    <div class="actions">
-      <button onclick="showPage('addmoney')">Add Money</button>
-      <button onclick="showPage('transactions')">Transactions</button>
-    </div>
-  </div>
-</div>
-
-<!-- WALLET -->
-<div id="wallet" class="page">
-  <div class="card">
-    <h2>Wallet</h2>
-    <p>Balance:</p>
-    <div class="balance" id="walletBalance">$0.00</div>
-  </div>
-</div>
-
-<!-- MARKET -->
-<div id="market" class="page">
-  <div class="card">
-    <h2>Market</h2>
-    <p>Visa & services coming soon</p>
-  </div>
-</div>
-
-<!-- ADD MONEY -->
-<div id="addmoney" class="page">
-  <div class="card">
-    <h2>Add Money</h2>
-    <input id="amount" placeholder="Amount" style="width:100%;padding:12px;margin-bottom:10px">
-    <button onclick="submitDeposit()" style="width:100%">Submit</button>
-  </div>
-</div>
-
-<!-- TRANSACTIONS -->
-<div id="transactions" class="page">
-  <div class="card">
-    <h2>Transactions</h2>
-    <div id="txList">No transactions yet</div>
-  </div>
-</div>
-
-</div>
+<button onclick="logout()">Logout</button>
 
 <script>
-/* ---------- SUPABASE ---------- */
-const supabase = supabase.createClient(
-  "https://lghhofyhzopfnibodsjw.supabase.co",
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxnaGhvZnloem9wZm5pYm9kc2p3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU5OTAzODEsImV4cCI6MjA4MTU2NjM4MX0.oTxQ7U5HcP9OO7rAuMN7awk1EQQn_TuDrL-AZ-uK-5w"
-);
-
-/* ---------- AUTH PROTECT ---------- */
-async function protect() {
+(async () => {
   const { data } = await supabase.auth.getUser();
-  if (!data.user) window.location.href = "login.html";
-}
-protect();
+  if (!data.user) location.href = "index.html";
+  user.innerText = data.user.email;
+})();
 
-/* ---------- MENU ---------- */
-function toggleMenu() {
-  document.getElementById("sidebar").classList.toggle("active");
-}
-
-/* ---------- PAGE NAV ---------- */
-function showPage(id) {
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  toggleMenu();
-}
-
-/* ---------- LOGOUT ---------- */
 async function logout() {
   await supabase.auth.signOut();
-  window.location.href = "login.html";
-}
-
-/* ---------- LOAD BALANCE ---------- */
-async function loadBalance() {
-  const { data:user } = await supabase.auth.getUser();
-  if (!user.user) return;
-
-  const { data } = await supabase
-    .from("profiles")
-    .select("balance")
-    .eq("id", user.user.id)
-    .single();
-
-  if (data) {
-    document.getElementById("balance").innerText = "$" + Number(data.balance||0).toFixed(2);
-    document.getElementById("walletBalance").innerText = "$" + Number(data.balance||0).toFixed(2);
-  }
-}
-loadBalance();
-
-/* ---------- ADD MONEY ---------- */
-function submitDeposit() {
-  alert("Deposit submitted. Waiting for admin approval.");
+  location.href = "index.html";
 }
 </script>
-
 </body>
 </html>
