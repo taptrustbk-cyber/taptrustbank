@@ -1,77 +1,65 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>Create Account | TapTrust Bank</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZenoPay Signup</title>
+  <script src="js/supabase.js"></script>
+</head>
 
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<body>
+<h2>Create Account</h2>
 
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Poppins', sans-serif;
-    }
+<input id="name" placeholder="Full Name"><br>
+<input id="email" placeholder="Email"><br>
+<input id="password" type="password" placeholder="Password"><br>
+<input type="date" id="dob"><br><br>
 
-    body {
-      height: 100vh;
-      background:
-        linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)),
-        url("taptrust-bg.jpg");
-      background-size: cover;
-      background-position: center;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
-    }
+<label>ID Card Front</label>
+<input type="file" id="idFront"><br>
 
-    .card {
-      width: 92%;
-      max-width: 440px;
-      padding: 45px 35px;
-      border-radius: 22px;
-      background: rgba(0,0,0,0.55);
-      backdrop-filter: blur(18px);
-      box-shadow: 0 25px 70px rgba(0,0,0,0.8);
-      border: 1px solid rgba(255,215,0,0.25);
-      text-align: center;
-    }
+<label>ID Card Back</label>
+<input type="file" id="idBack"><br>
 
-    .logo {
-      font-size: 34px;
-      font-weight: 700;
-      color: gold;
-      margin-bottom: 10px;
-    }
+<label>Selfie</label>
+<input type="file" id="selfie"><br><br>
 
-    .subtitle {
-      font-size: 14px;
-      opacity: 0.8;
-      margin-bottom: 28px;
-    }
+<button onclick="signup()">Finish & Create Account</button>
 
-    .group {
-      text-align: left;
-      margin-bottom: 18px;
-    }
+<p id="msg"></p>
 
-    .group label {
-      font-size: 13px;
-      margin-bottom: 6px;
-      display: block;
-    }
+<script>
+async function signup() {
 
-    .group input {
-      width: 100%;
-      padding: 14px;
-      border-radius: 10px;
-      border: none;
-      background: rgba(255,255,255,0.12);
-      color: #fff;
-      font-size: 15px;
-    }
+  const { data, error } = await supabase.auth.signUp({
+    email: email.value,
+    password: password.value
+  });
 
-    .btn
+  if (error) {
+    msg.innerText = error.message;
+    return;
+  }
+
+  const userId = data.user.id;
+
+  await supabase.storage.from('id_front')
+    .upload(`${userId}.jpg`, idFront.files[0]);
+
+  await supabase.storage.from('id_back')
+    .upload(`${userId}.jpg`, idBack.files[0]);
+
+  await supabase.storage.from('selfie')
+    .upload(`${userId}.jpg`, selfie.files[0]);
+
+  await supabase.from('profiles').insert({
+    id: userId,
+    full_name: name.value,
+    email: email.value,
+    dob: dob.value
+  });
+
+  msg.innerText = "Check your email to verify your account.";
+  setTimeout(() => location.href = "index.html", 3000);
+}
+</script>
+</body>
+</html>
